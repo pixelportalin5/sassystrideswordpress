@@ -198,6 +198,45 @@ function sassystrides_post_matches_keywords( $post_id, array $keywords ) {
  * Requires a permalinks flush after activation — visit
  * Settings > Permalinks and click "Save Changes" once.
  */
+/**
+ * Category URLs: /fashion/ instead of /category/fashion/, matching the
+ * original React site's routes. The subcategory rewrite rules below were
+ * already written assuming this flat shape, but the piece that actually
+ * produces/resolves it was missing.
+ *
+ * 1) category_link strips "/category/" from every generated category URL
+ *    (get_category_link(), which sassystrides_get_category_url() and core
+ *    template tags both call).
+ * 2) A rewrite rule per category routes the resulting flat URL back to the
+ *    category archive, since WordPress's own generated rules still expect
+ *    the /category/ prefix.
+ *
+ * Requires a permalinks flush after activation/update — visit
+ * Settings > Permalinks and click "Save Changes" once.
+ */
+function sassystrides_remove_category_base( $link ) {
+	return str_replace( '/category/', '/', $link );
+}
+add_filter( 'category_link', 'sassystrides_remove_category_base' );
+
+function sassystrides_register_flat_category_rewrites() {
+	foreach ( get_categories( array( 'hide_empty' => false ) ) as $sassystrides_flat_category ) {
+		$sassystrides_slug = preg_quote( $sassystrides_flat_category->slug, '#' );
+
+		add_rewrite_rule(
+			'^' . $sassystrides_slug . '/page/([0-9]{1,})/?$',
+			'index.php?category_name=' . $sassystrides_flat_category->slug . '&paged=$matches[1]',
+			'top'
+		);
+		add_rewrite_rule(
+			'^' . $sassystrides_slug . '/?$',
+			'index.php?category_name=' . $sassystrides_flat_category->slug,
+			'top'
+		);
+	}
+}
+add_action( 'init', 'sassystrides_register_flat_category_rewrites' );
+
 function sassystrides_register_subcategory_rewrites() {
 	foreach ( array( 'fashion', 'beauty', 'lifestyle', 'trends', 'news' ) as $sassystrides_parent_slug ) {
 		$sassystrides_sub_slugs = wp_list_pluck( sassystrides_get_subcategories_by_parent( $sassystrides_parent_slug ), 'slug' );
@@ -607,6 +646,13 @@ function sassystrides_scripts() {
 		array(),
 		wp_get_theme()->get( 'Version' ),
 		true
+	);
+	wp_localize_script(
+		'sassystrides-header-search',
+		'sassystridesSearch',
+		array(
+			'restUrl' => esc_url_raw( rest_url( 'wp/v2/posts' ) ),
+		)
 	);
 }
 add_action( 'wp_enqueue_scripts', 'sassystrides_scripts' );

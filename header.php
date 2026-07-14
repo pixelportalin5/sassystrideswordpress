@@ -73,9 +73,13 @@ $sassystrides_social_links = array(
 							placeholder="<?php esc_attr_e( 'Search stories', 'sassy-strides' ); ?>"
 							class="site-header__search-input"
 							autocomplete="off"
+							role="combobox"
+							aria-autocomplete="list"
+							aria-expanded="false"
+							aria-controls="site-header-search-suggestions"
 						>
 					</form>
-					<?php // TODO: live "site-header__search-suggestions" dropdown requires a JS/AJAX rebuild of HeaderSearch.jsx. ?>
+					<ul id="site-header-search-suggestions" class="site-header__search-suggestions" role="listbox" aria-label="<?php esc_attr_e( 'Story suggestions', 'sassy-strides' ); ?>" hidden></ul>
 				</div>
 			</div>
 
