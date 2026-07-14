@@ -312,6 +312,31 @@ function sassystrides_is_featured_page( $slug ) {
 }
 
 /**
+ * The 3 rotating cube ad unit IDs. Mirrors constants/categoryCubeAds.js's
+ * CATEGORY_CUBE_ADS ([the_ad id="2293|2294|2295"]).
+ */
+function sassystrides_get_category_cube_ad_ids() {
+	return array( 2293, 2294, 2295 );
+}
+
+/**
+ * Renders an Advanced Ads unit once and returns the markup as a string,
+ * instead of echoing it directly. CategoryThreeCubeAds.jsx fetches each ad's
+ * data once and reuses it across all 4 cube faces (front/back/left/right);
+ * capturing the_ad() output here the same way avoids the_ad() being called
+ * (and impressions being tracked) 4x per cube.
+ */
+function sassystrides_get_ad_html( $ad_id ) {
+	if ( ! $ad_id || ! function_exists( 'the_ad' ) ) {
+		return '';
+	}
+
+	ob_start();
+	the_ad( $ad_id );
+	return trim( (string) ob_get_clean() );
+}
+
+/**
  * Article body ad injection. Ports utils/normalizeArticleHtml.js and
  * utils/adInjection.js's splitArticleParagraphs()/getArticleAdParagraphIndexes()
  * so single.php can interleave Advanced Ads at the same block positions

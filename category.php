@@ -12,8 +12,11 @@
  * - The sort dropdown / grid-list toggle are wired to ?sort= and ?view=
  *   query args (server-rendered, no client JS/state) instead of React
  *   useState, since there's no client fetch to re-run.
- * - CategoryThreeCubeAds (3D cube ad unit with its own CSS file) is left as
- *   a TODO; send its component + categoryCubeAds config over when ready.
+ * - CategoryThreeCubeAds's 4 faces (front/back/left/right) all show the
+ *   *same* ad creative rotating in 3D, matching the React version's
+ *   single useAd(adId) call reused across all 4 <CubeFaceContent> renders.
+ *   sassystrides_get_ad_html() captures the_ad() output once per cube so
+ *   it isn't rendered (and tracked) 4 separate times.
  */
 
 get_header();
@@ -313,7 +316,36 @@ $sassystrides_hero_thumbnail_id = $sassystrides_category_query->have_posts() ? $
 
 						<?php wp_reset_postdata(); ?>
 
-						<?php // TODO: CategoryThreeCubeAds — port once CategoryThreeCubeAds.jsx + constants/categoryCubeAds.js are provided. ?>
+						<?php if ( $sassystrides_show_featured_ads ) : ?>
+							<!-- CategoryThreeCubeAds -->
+							<div class="category-page__cube-ads">
+								<div class="ad-cube-row">
+									<?php foreach ( sassystrides_get_category_cube_ad_ids() as $sassystrides_cube_ad_id ) : ?>
+										<?php $sassystrides_cube_ad_html = sassystrides_get_ad_html( $sassystrides_cube_ad_id ); ?>
+										<?php if ( '' !== $sassystrides_cube_ad_html ) : ?>
+											<div class="ad-cube-link" aria-label="<?php esc_attr_e( 'Sponsored offer', 'sassy-strides' ); ?>">
+												<div class="ad-cube-scene">
+													<div class="ad-cube">
+														<div class="ad-cube__face ad-cube__face--front">
+															<div class="ad-cube__face-html"><?php echo $sassystrides_cube_ad_html; // phpcs:ignore WordPress.Security.EscapeOutput -- trusted Advanced Ads markup. ?></div>
+														</div>
+														<div class="ad-cube__face ad-cube__face--back">
+															<div class="ad-cube__face-html"><?php echo $sassystrides_cube_ad_html; // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
+														</div>
+														<div class="ad-cube__face ad-cube__face--left">
+															<div class="ad-cube__face-html"><?php echo $sassystrides_cube_ad_html; // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
+														</div>
+														<div class="ad-cube__face ad-cube__face--right">
+															<div class="ad-cube__face-html"><?php echo $sassystrides_cube_ad_html; // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
+														</div>
+													</div>
+												</div>
+											</div>
+										<?php endif; ?>
+									<?php endforeach; ?>
+								</div>
+							</div>
+						<?php endif; ?>
 
 					</div>
 				<?php else : ?>

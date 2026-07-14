@@ -339,6 +339,37 @@ $sassystrides_hero_post = ! empty( $sassystrides_filtered_posts ) ? $sassystride
 
 						<?php wp_reset_postdata(); ?>
 
+						<?php if ( $sassystrides_show_featured_ads ) : ?>
+							<!-- CategoryThreeCubeAds -->
+							<div class="category-page__cube-ads">
+								<div class="ad-cube-row">
+									<?php foreach ( sassystrides_get_category_cube_ad_ids() as $sassystrides_cube_ad_id ) : ?>
+										<?php $sassystrides_cube_ad_html = sassystrides_get_ad_html( $sassystrides_cube_ad_id ); ?>
+										<?php if ( '' !== $sassystrides_cube_ad_html ) : ?>
+											<div class="ad-cube-link" aria-label="<?php esc_attr_e( 'Sponsored offer', 'sassy-strides' ); ?>">
+												<div class="ad-cube-scene">
+													<div class="ad-cube">
+														<div class="ad-cube__face ad-cube__face--front">
+															<div class="ad-cube__face-html"><?php echo $sassystrides_cube_ad_html; // phpcs:ignore WordPress.Security.EscapeOutput -- trusted Advanced Ads markup. ?></div>
+														</div>
+														<div class="ad-cube__face ad-cube__face--back">
+															<div class="ad-cube__face-html"><?php echo $sassystrides_cube_ad_html; // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
+														</div>
+														<div class="ad-cube__face ad-cube__face--left">
+															<div class="ad-cube__face-html"><?php echo $sassystrides_cube_ad_html; // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
+														</div>
+														<div class="ad-cube__face ad-cube__face--right">
+															<div class="ad-cube__face-html"><?php echo $sassystrides_cube_ad_html; // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
+														</div>
+													</div>
+												</div>
+											</div>
+										<?php endif; ?>
+									<?php endforeach; ?>
+								</div>
+							</div>
+						<?php endif; ?>
+
 					</div>
 				<?php else : ?>
 					<div class="category-posts__empty border border-ink/10 bg-porcelain p-10 text-center">

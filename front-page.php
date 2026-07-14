@@ -43,6 +43,10 @@ $sassystrides_has_any_posts = (bool) wp_count_posts()->publish;
 		<main class="homepage-magazine">
 
 			<?php
+			// Prefer a post tagged 'hero-featured' for editorial control; if
+			// none exists yet, fall back to the single latest published post
+			// (Home.jsx / HeroSection.jsx's real default: hero = posts[0]),
+			// so the hero never renders blank on a fresh site.
 			$sassystrides_hero_query = new WP_Query(
 				array(
 					'posts_per_page' => 1,
@@ -50,6 +54,18 @@ $sassystrides_has_any_posts = (bool) wp_count_posts()->publish;
 					'tag'            => 'hero-featured',
 				)
 			);
+
+			if ( ! $sassystrides_hero_query->have_posts() ) {
+				$sassystrides_hero_query = new WP_Query(
+					array(
+						'posts_per_page'      => 1,
+						'post_status'         => 'publish',
+						'orderby'             => 'date',
+						'order'               => 'DESC',
+						'ignore_sticky_posts' => true,
+					)
+				);
+			}
 			?>
 
 			<?php if ( $sassystrides_hero_query->have_posts() ) : ?>
@@ -120,7 +136,9 @@ $sassystrides_has_any_posts = (bool) wp_count_posts()->publish;
 
 			<?php else : ?>
 
-				<!-- HeroSection's own empty state: no post tagged 'hero-featured' yet -->
+				<!-- HeroSection's own empty state: unreachable in practice now that
+				     the query above falls back to the latest post, but kept as a
+				     defensive fallback matching HeroSection.jsx's `if (!hero)` branch. -->
 				<section class="hero-section editorial-container grid min-h-[300px] place-items-center border-x border-b border-ink/10 bg-paper-grain lg:min-h-0">
 					<p class="micro-label text-taupe"><?php esc_html_e( 'Loading Editorial Stories', 'sassy-strides' ); ?></p>
 				</section>

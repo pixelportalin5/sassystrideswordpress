@@ -15,7 +15,7 @@
 $sassystrides_logo_id  = get_theme_mod( 'custom_logo' );
 $sassystrides_logo_url = $sassystrides_logo_id
 	? wp_get_attachment_image_url( $sassystrides_logo_id, 'full' )
-	: 'https://sassystrides.com/wp-content/uploads/2026/06/sassystrides2light_logo-removebg-preview-e1781683275677.png'; // TODO: remove fallback once a logo is set via Customizer > Site Identity.
+	: 'https://olive-rail-428908.hostingersite.com/wp-content/uploads/2026/07/sassystrides2light_logo-removebg-preview-e1781683275677-2.webp'; // Fallback used until a logo is set via Customizer > Site Identity.
 
 $sassystrides_social_links = array(
 	array(
