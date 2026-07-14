@@ -94,6 +94,157 @@ function sassystrides_get_category_url( $slug ) {
 }
 
 /**
+ * Subcategories are NOT real WordPress taxonomy terms — the React app
+ * defines them as a static list (constants/subcategories.js) with keyword
+ * arrays, and filters posts already in the parent category by matching
+ * those keywords against each post's title/excerpt/content/category/tags.
+ * Mirrored here verbatim so /fashion/street-style etc. resolve to the same
+ * posts the SPA would have shown, without requiring child category terms
+ * to exist in wp-admin.
+ */
+function sassystrides_get_subcategories() {
+	return array(
+		array( 'parent_slug' => 'fashion', 'slug' => 'clothing', 'name' => __( 'Clothing', 'sassy-strides' ), 'description' => __( 'Discover modern clothing styles, outfit ideas, and wardrobe essentials for every season.', 'sassy-strides' ), 'keywords' => array( 'clothing', 'outfit', 'wardrobe', 'apparel', 'dress', 'wear' ) ),
+		array( 'parent_slug' => 'fashion', 'slug' => 'fashion-week', 'name' => __( 'Fashion Week', 'sassy-strides' ), 'description' => __( 'Get runway highlights, designer collections, and global Fashion Week updates.', 'sassy-strides' ), 'keywords' => array( 'fashion week', 'runway', 'designer', 'collection', 'catwalk' ) ),
+		array( 'parent_slug' => 'fashion', 'slug' => 'look-of-the-day', 'name' => __( 'Look of the Day', 'sassy-strides' ), 'description' => __( 'Daily fashion inspiration featuring stylish celebrity and influencer outfits.', 'sassy-strides' ), 'keywords' => array( 'look of the day', 'celebrity', 'influencer', 'outfit', 'style' ) ),
+		array( 'parent_slug' => 'fashion', 'slug' => 'accessories', 'name' => __( 'Accessories', 'sassy-strides' ), 'description' => __( 'Explore trending bags, jewelry, belts, and fashion accessories to elevate your look.', 'sassy-strides' ), 'keywords' => array( 'accessories', 'bags', 'jewelry', 'belts', 'handbag' ) ),
+		array( 'parent_slug' => 'fashion', 'slug' => 'shoes', 'name' => __( 'Shoes', 'sassy-strides' ), 'description' => __( 'Find the latest footwear trends, from sneakers to heels and everyday comfort styles.', 'sassy-strides' ), 'keywords' => array( 'shoes', 'footwear', 'sneakers', 'heels', 'boots' ) ),
+		array( 'parent_slug' => 'beauty', 'slug' => 'hair', 'name' => __( 'Hair', 'sassy-strides' ), 'description' => __( 'Haircare tips, hairstyles, and trending hair transformations for every type.', 'sassy-strides' ), 'keywords' => array( 'hair', 'haircare', 'hairstyle', 'salon' ) ),
+		array( 'parent_slug' => 'beauty', 'slug' => 'skin', 'name' => __( 'Skin', 'sassy-strides' ), 'description' => __( 'Skincare routines, product guides, and healthy glowing skin solutions.', 'sassy-strides' ), 'keywords' => array( 'skin', 'skincare', 'glow', 'serum', 'moisturizer' ) ),
+		array( 'parent_slug' => 'beauty', 'slug' => 'makeup', 'name' => __( 'Makeup', 'sassy-strides' ), 'description' => __( 'Latest makeup trends, tutorials, and product recommendations for all looks.', 'sassy-strides' ), 'keywords' => array( 'makeup', 'cosmetics', 'lipstick', 'foundation', 'beauty' ) ),
+		array( 'parent_slug' => 'beauty', 'slug' => 'nails', 'name' => __( 'Nails', 'sassy-strides' ), 'description' => __( 'Nail art ideas, manicure trends, and seasonal nail inspiration.', 'sassy-strides' ), 'keywords' => array( 'nails', 'manicure', 'nail art', 'polish' ) ),
+		array( 'parent_slug' => 'beauty', 'slug' => 'fragrance', 'name' => __( 'Fragrance', 'sassy-strides' ), 'description' => __( 'Explore perfumes, scent trends, and fragrance guides for every mood.', 'sassy-strides' ), 'keywords' => array( 'fragrance', 'perfume', 'scent', 'cologne' ) ),
+		array( 'parent_slug' => 'lifestyle', 'slug' => 'airport-style', 'name' => __( 'Airport Style', 'sassy-strides' ), 'description' => __( 'Comfortable yet stylish travel outfit ideas for airport looks.', 'sassy-strides' ), 'keywords' => array( 'airport', 'travel', 'flight', 'luggage' ) ),
+		array( 'parent_slug' => 'lifestyle', 'slug' => 'office', 'name' => __( 'Office', 'sassy-strides' ), 'description' => __( 'Professional and trendy workwear inspiration for modern office fashion.', 'sassy-strides' ), 'keywords' => array( 'office', 'workwear', 'professional', 'workplace', 'corporate' ) ),
+		array( 'parent_slug' => 'lifestyle', 'slug' => 'street-style', 'name' => __( 'Street Style', 'sassy-strides' ), 'description' => __( 'Real-world fashion inspiration from global street style trends.', 'sassy-strides' ), 'keywords' => array( 'street style', 'streetwear', 'urban' ) ),
+		array( 'parent_slug' => 'lifestyle', 'slug' => 'holiday', 'name' => __( 'Holiday', 'sassy-strides' ), 'description' => __( 'Vacation outfit ideas and travel fashion inspiration for every destination.', 'sassy-strides' ), 'keywords' => array( 'holiday', 'vacation', 'resort', 'getaway', 'travel' ) ),
+		array( 'parent_slug' => 'lifestyle', 'slug' => 'party', 'name' => __( 'Party', 'sassy-strides' ), 'description' => __( 'Glamorous party looks and styling ideas for special occasions.', 'sassy-strides' ), 'keywords' => array( 'party', 'evening', 'celebration', 'gala', 'occasion' ) ),
+		array( 'parent_slug' => 'trends', 'slug' => 'spring', 'name' => __( 'Spring', 'sassy-strides' ), 'description' => __( 'Fresh spring fashion, colors, and style inspiration.', 'sassy-strides' ), 'keywords' => array( 'spring', 'seasonal' ) ),
+		array( 'parent_slug' => 'trends', 'slug' => 'summer', 'name' => __( 'Summer', 'sassy-strides' ), 'description' => __( 'Lightweight, trendy summer outfits and seasonal beauty looks.', 'sassy-strides' ), 'keywords' => array( 'summer', 'seasonal' ) ),
+		array( 'parent_slug' => 'trends', 'slug' => 'autumn', 'name' => __( 'Autumn', 'sassy-strides' ), 'description' => __( 'Warm, stylish autumn fashion and cozy seasonal trends.', 'sassy-strides' ), 'keywords' => array( 'autumn', 'fall', 'seasonal' ) ),
+		array( 'parent_slug' => 'trends', 'slug' => 'winter', 'name' => __( 'Winter', 'sassy-strides' ), 'description' => __( 'Elegant winter outfits, layering ideas, and cold-weather style tips.', 'sassy-strides' ), 'keywords' => array( 'winter', 'layering', 'seasonal' ) ),
+		array( 'parent_slug' => 'news', 'slug' => 'awards-events', 'name' => __( 'Awards & Events', 'sassy-strides' ), 'description' => __( 'Coverage of fashion awards, red carpet events, and industry shows.', 'sassy-strides' ), 'keywords' => array( 'awards', 'events', 'red carpet', 'gala', 'ceremony' ) ),
+		array( 'parent_slug' => 'news', 'slug' => 'entertainment', 'name' => __( 'Entertainment', 'sassy-strides' ), 'description' => __( 'Celebrity news, lifestyle updates, and pop culture stories.', 'sassy-strides' ), 'keywords' => array( 'entertainment', 'celebrity', 'pop culture' ) ),
+	);
+}
+
+function sassystrides_get_subcategories_by_parent( $parent_slug ) {
+	return array_values(
+		array_filter(
+			sassystrides_get_subcategories(),
+			function ( $sassystrides_sub ) use ( $parent_slug ) {
+				return $sassystrides_sub['parent_slug'] === $parent_slug;
+			}
+		)
+	);
+}
+
+function sassystrides_get_subcategory( $parent_slug, $sub_slug ) {
+	foreach ( sassystrides_get_subcategories() as $sassystrides_sub ) {
+		if ( $sassystrides_sub['parent_slug'] === $parent_slug && $sassystrides_sub['slug'] === $sub_slug ) {
+			return $sassystrides_sub;
+		}
+	}
+
+	return null;
+}
+
+/**
+ * Mirrors postMatchesKeyword() in SubcategoryPage.jsx: a post "belongs" to
+ * a virtual subcategory if any of its keywords appear in the post's
+ * title, excerpt, content, category name, or tag names.
+ */
+function sassystrides_post_matches_keywords( $post_id, array $keywords ) {
+	if ( empty( $keywords ) ) {
+		return false;
+	}
+
+	$sassystrides_haystack_parts = array(
+		get_the_title( $post_id ),
+		get_the_excerpt( $post_id ),
+		wp_strip_all_tags( (string) get_post_field( 'post_content', $post_id ) ),
+	);
+
+	foreach ( get_the_category( $post_id ) as $sassystrides_term ) {
+		$sassystrides_haystack_parts[] = $sassystrides_term->name;
+	}
+
+	$sassystrides_post_tags = get_the_tags( $post_id );
+	if ( $sassystrides_post_tags ) {
+		foreach ( $sassystrides_post_tags as $sassystrides_tag ) {
+			$sassystrides_haystack_parts[] = $sassystrides_tag->name;
+		}
+	}
+
+	$sassystrides_haystack = strtolower( wp_strip_all_tags( implode( ' ', $sassystrides_haystack_parts ) ) );
+
+	foreach ( $keywords as $sassystrides_keyword ) {
+		if ( '' !== $sassystrides_keyword && false !== strpos( $sassystrides_haystack, strtolower( $sassystrides_keyword ) ) ) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * Registers /{parent}/{subcategory}/ rewrite rules for the virtual
+ * subcategories above (e.g. /lifestyle/street-style/), routing them to
+ * category-subcategory.php via the template_include filter below instead
+ * of 404ing. Each parent's subcategory slugs are matched by exact
+ * alternation (not a wildcard) so this can't accidentally swallow a real
+ * post permalink that happens to share the /parent/something/ shape.
+ *
+ * Requires a permalinks flush after activation — visit
+ * Settings > Permalinks and click "Save Changes" once.
+ */
+function sassystrides_register_subcategory_rewrites() {
+	foreach ( array( 'fashion', 'beauty', 'lifestyle', 'trends', 'news' ) as $sassystrides_parent_slug ) {
+		$sassystrides_sub_slugs = wp_list_pluck( sassystrides_get_subcategories_by_parent( $sassystrides_parent_slug ), 'slug' );
+
+		if ( empty( $sassystrides_sub_slugs ) ) {
+			continue;
+		}
+
+		$sassystrides_pattern = '^' . preg_quote( $sassystrides_parent_slug, '#' ) . '/(' . implode(
+			'|',
+			array_map(
+				function ( $sassystrides_slug ) {
+					return preg_quote( $sassystrides_slug, '#' );
+				},
+				$sassystrides_sub_slugs
+			)
+		) . ')/?$';
+
+		add_rewrite_rule(
+			$sassystrides_pattern,
+			'index.php?category_name=' . $sassystrides_parent_slug . '&sassystrides_subcategory=$matches[1]',
+			'top'
+		);
+	}
+}
+add_action( 'init', 'sassystrides_register_subcategory_rewrites' );
+
+function sassystrides_subcategory_query_vars( $vars ) {
+	$vars[] = 'sassystrides_subcategory';
+	return $vars;
+}
+add_filter( 'query_vars', 'sassystrides_subcategory_query_vars' );
+
+function sassystrides_subcategory_template( $template ) {
+	if ( get_query_var( 'sassystrides_subcategory' ) ) {
+		$sassystrides_custom_template = locate_template( 'category-subcategory.php' );
+
+		if ( $sassystrides_custom_template ) {
+			return $sassystrides_custom_template;
+		}
+	}
+
+	return $template;
+}
+add_filter( 'template_include', 'sassystrides_subcategory_template' );
+
+/**
  * Shared social link list, mirrors constants/social.js. Used by footer.php
  * and page-contact.php so both stay in sync from a single source.
  */

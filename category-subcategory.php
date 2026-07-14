@@ -1,34 +1,55 @@
 <?php
 /**
- * Category archive template. Replaces CategoryPage.jsx
+ * Virtual subcategory template. Replaces SubcategoryPage.jsx.
  *
- * Architectural notes (deviations from the literal SPA source):
- * - Subcategories (CategoryHero subnav, CategorySidebar "Browse" list) are
- *   NOT real WordPress taxonomy terms in the original app — they're a
- *   static list with keyword arrays (constants/subcategories.js) used to
- *   filter posts already in the parent category. sassystrides_get_subcategories_by_parent()
- *   in functions.php mirrors that list so these links match the virtual
- *   /parent/subcategory/ routes handled by category-subcategory.php.
- * - The sort dropdown / grid-list toggle are wired to ?sort= and ?view=
- *   query args (server-rendered, no client JS/state) instead of React
- *   useState, since there's no client fetch to re-run.
- * - CategoryThreeCubeAds (3D cube ad unit with its own CSS file) is left as
- *   a TODO; send its component + categoryCubeAds config over when ready.
+ * Loaded via the template_include filter in functions.php whenever the
+ * sassystrides_subcategory query var is set (see
+ * sassystrides_register_subcategory_rewrites()) — i.e. for URLs like
+ * /fashion/street-style/. WordPress has no such term to query, so the main
+ * query here still resolves to the *parent* category archive; this file
+ * fetches that category's posts itself and filters them in PHP by the
+ * subcategory's keyword list, exactly like postMatchesKeyword() did in
+ * the SPA.
+ *
+ * Deviation from the SPA: this does not attempt to reproduce the SPA's
+ * synthetic /parent/subcategory/postslug permalink for individual posts —
+ * article links here use get_permalink(), i.e. whatever permalink
+ * structure is actually configured for this WordPress site. That's the
+ * correct approach for a real WP install; only the parent/subcategory
+ * *listing* URL is a custom rewrite.
  */
 
 get_header();
 
-$sassystrides_current_term = get_queried_object();
-$sassystrides_parent_term  = ( $sassystrides_current_term instanceof WP_Term && $sassystrides_current_term->parent )
-	? get_term( $sassystrides_current_term->parent, 'category' )
-	: $sassystrides_current_term;
+$sassystrides_parent_slug = get_query_var( 'category_name' );
+$sassystrides_sub_slug    = get_query_var( 'sassystrides_subcategory' );
+$sassystrides_parent_term = $sassystrides_parent_slug ? get_term_by( 'slug', $sassystrides_parent_slug, 'category' ) : false;
+$sassystrides_subcategory = sassystrides_get_subcategory( $sassystrides_parent_slug, $sassystrides_sub_slug );
 
-$sassystrides_subcategories = ( $sassystrides_parent_term instanceof WP_Term )
-	? sassystrides_get_subcategories_by_parent( $sassystrides_parent_term->slug )
-	: array();
+if ( ! $sassystrides_subcategory || ! $sassystrides_parent_term ) :
+	?>
+	<main class="editorial-container grid min-h-[60vh] place-items-center text-center">
+		<div>
+			<p class="micro-label mb-4 text-bronze"><?php bloginfo( 'name' ); ?></p>
+			<h1 class="serif-title text-5xl leading-none text-espresso"><?php esc_html_e( 'Section not found.', 'sassy-strides' ); ?></h1>
+			<a href="<?php echo esc_url( sassystrides_get_category_url( $sassystrides_parent_slug ? $sassystrides_parent_slug : 'fashion' ) ); ?>" class="btn-cta btn-cta--primary mt-8">
+				<?php
+				printf(
+					/* translators: %s: parent category name */
+					esc_html__( 'Back to %s', 'sassy-strides' ),
+					esc_html( $sassystrides_parent_term instanceof WP_Term ? $sassystrides_parent_term->name : ucfirst( (string) $sassystrides_parent_slug ) )
+				);
+				?>
+			</a>
+		</div>
+	</main>
+	<?php
+	get_footer();
+	return;
+endif;
 
-$sassystrides_route_slug       = ( $sassystrides_parent_term instanceof WP_Term ) ? $sassystrides_parent_term->slug : '';
-$sassystrides_show_featured_ads = sassystrides_is_featured_page( $sassystrides_route_slug );
+$sassystrides_sibling_subcategories = sassystrides_get_subcategories_by_parent( $sassystrides_parent_slug );
+$sassystrides_show_featured_ads     = sassystrides_is_featured_page( $sassystrides_parent_slug );
 
 // Toolbar state via query args (progressive enhancement, no client JS required).
 $sassystrides_sort = isset( $_GET['sort'] ) ? sanitize_key( wp_unslash( $_GET['sort'] ) ) : 'latest';
@@ -41,26 +62,38 @@ if ( ! in_array( $sassystrides_view, array( 'grid', 'list' ), true ) ) {
 	$sassystrides_view = 'grid';
 }
 
-$sassystrides_orderby = 'date';
-$sassystrides_order   = 'DESC';
-if ( 'oldest' === $sassystrides_sort ) {
-	$sassystrides_order = 'ASC';
-} elseif ( 'popular' === $sassystrides_sort ) {
-	$sassystrides_orderby = 'comment_count';
-	$sassystrides_order   = 'DESC';
-}
-
-$sassystrides_category_query = new WP_Query(
+// Fetch the parent category's posts, then filter to the ones matching
+// this subcategory's keywords (mirrors fetchCategoryPostsQuery + the
+// client-side filteredPosts memo in SubcategoryPage.jsx).
+$sassystrides_parent_posts_query = new WP_Query(
 	array(
-		'cat'            => $sassystrides_current_term->term_id,
+		'cat'            => $sassystrides_parent_term->term_id,
 		'post_status'    => 'publish',
-		'posts_per_page' => 20,
-		'orderby'        => $sassystrides_orderby,
-		'order'          => $sassystrides_order,
+		'posts_per_page' => 100,
+		'orderby'        => 'date',
+		'order'          => 'DESC',
 	)
 );
 
-$sassystrides_hero_thumbnail_id = $sassystrides_category_query->have_posts() ? $sassystrides_category_query->posts[0]->ID : 0;
+$sassystrides_filtered_posts = array();
+foreach ( $sassystrides_parent_posts_query->posts as $sassystrides_candidate_post ) {
+	if ( sassystrides_post_matches_keywords( $sassystrides_candidate_post->ID, $sassystrides_subcategory['keywords'] ) ) {
+		$sassystrides_filtered_posts[] = $sassystrides_candidate_post;
+	}
+}
+
+if ( 'oldest' === $sassystrides_sort ) {
+	$sassystrides_filtered_posts = array_reverse( $sassystrides_filtered_posts );
+} elseif ( 'popular' === $sassystrides_sort ) {
+	usort(
+		$sassystrides_filtered_posts,
+		function ( $sassystrides_a, $sassystrides_b ) {
+			return (int) $sassystrides_b->comment_count - (int) $sassystrides_a->comment_count;
+		}
+	);
+}
+
+$sassystrides_hero_post = ! empty( $sassystrides_filtered_posts ) ? $sassystrides_filtered_posts[0] : ( $sassystrides_parent_posts_query->posts[0] ?? null );
 ?>
 
 <div class="min-h-screen bg-ivory text-ink">
@@ -72,29 +105,18 @@ $sassystrides_hero_thumbnail_id = $sassystrides_category_query->have_posts() ? $
 			<div class="category-hero__grid grid min-h-[150px] lg:min-h-[180px] lg:grid-cols-[0.68fr_1.32fr]">
 				<div class="category-hero__copy border-b border-ink/10 bg-porcelain/70 px-5 sm:px-6 lg:border-b-0 lg:border-r lg:pl-6 lg:pr-5">
 					<h1 class="serif-title text-6xl font-semibold uppercase leading-[0.84] text-espresso sm:text-7xl lg:text-7xl">
-						<?php single_cat_title(); ?>
+						<?php echo esc_html( $sassystrides_subcategory['name'] ); ?>
 					</h1>
 					<p class="max-w-sm text-sm leading-6 text-ink/78">
-						<?php
-						$sassystrides_category_desc = category_description();
-						if ( $sassystrides_category_desc ) {
-							echo wp_kses_post( $sassystrides_category_desc );
-						} else {
-							printf(
-								/* translators: %s: category name */
-								esc_html__( 'A curated edit of the newest %s stories from Sassy Strides.', 'sassy-strides' ),
-								esc_html( strtolower( single_cat_title( '', false ) ) )
-							);
-						}
-						?>
+						<?php echo esc_html( $sassystrides_subcategory['description'] ); ?>
 					</p>
 				</div>
 
-				<a href="<?php echo $sassystrides_hero_thumbnail_id ? esc_url( get_permalink( $sassystrides_hero_thumbnail_id ) ) : '#'; ?>" class="category-hero__image group relative min-h-[150px] lg:min-h-[180px]">
-					<?php if ( $sassystrides_hero_thumbnail_id && has_post_thumbnail( $sassystrides_hero_thumbnail_id ) ) : ?>
+				<a href="<?php echo $sassystrides_hero_post ? esc_url( get_permalink( $sassystrides_hero_post ) ) : '#'; ?>" class="category-hero__image group relative min-h-[150px] lg:min-h-[180px]">
+					<?php if ( $sassystrides_hero_post && has_post_thumbnail( $sassystrides_hero_post ) ) : ?>
 						<?php
 						echo get_the_post_thumbnail(
-							$sassystrides_hero_thumbnail_id,
+							$sassystrides_hero_post,
 							'large',
 							array(
 								'class'   => 'category-hero__image-el absolute inset-0 h-full w-full object-cover object-center saturate-[0.78] transition duration-700 group-hover:scale-[1.02] group-hover:saturate-100',
@@ -108,26 +130,26 @@ $sassystrides_hero_thumbnail_id = $sassystrides_category_query->have_posts() ? $
 			</div>
 
 			<nav class="category-subnav flex overflow-x-auto border-t border-ink/10 bg-ivory">
-				<?php $sassystrides_all_is_active = ( $sassystrides_parent_term instanceof WP_Term && $sassystrides_current_term->term_id === $sassystrides_parent_term->term_id ); ?>
 				<a
-					href="<?php echo esc_url( get_category_link( $sassystrides_parent_term ) ); ?>"
-					class="category-subnav__link<?php echo $sassystrides_all_is_active ? ' is-active' : ''; ?>"
-					<?php echo $sassystrides_all_is_active ? ' aria-current="page"' : ''; ?>
+					href="<?php echo esc_url( sassystrides_get_category_url( $sassystrides_parent_slug ) ); ?>"
+					class="category-subnav__link"
 				>
 					<?php
 					printf(
 						/* translators: %s: parent category name */
 						esc_html__( 'All %s', 'sassy-strides' ),
-						esc_html( $sassystrides_parent_term instanceof WP_Term ? $sassystrides_parent_term->name : '' )
+						esc_html( $sassystrides_parent_term->name )
 					);
 					?>
 				</a>
-				<?php foreach ( $sassystrides_subcategories as $sassystrides_subcategory ) : ?>
+				<?php foreach ( $sassystrides_sibling_subcategories as $sassystrides_sibling ) : ?>
+					<?php $sassystrides_sibling_is_active = ( $sassystrides_sibling['slug'] === $sassystrides_subcategory['slug'] ); ?>
 					<a
-						href="<?php echo esc_url( home_url( '/' . $sassystrides_route_slug . '/' . $sassystrides_subcategory['slug'] . '/' ) ); ?>"
-						class="category-subnav__link"
+						href="<?php echo esc_url( home_url( '/' . $sassystrides_parent_slug . '/' . $sassystrides_sibling['slug'] . '/' ) ); ?>"
+						class="category-subnav__link<?php echo $sassystrides_sibling_is_active ? ' is-active' : ''; ?>"
+						<?php echo $sassystrides_sibling_is_active ? ' aria-current="page"' : ''; ?>
 					>
-						<?php echo esc_html( $sassystrides_subcategory['name'] ); ?>
+						<?php echo esc_html( $sassystrides_sibling['name'] ); ?>
 					</a>
 				<?php endforeach; ?>
 			</nav>
@@ -143,15 +165,17 @@ $sassystrides_hero_thumbnail_id = $sassystrides_category_query->have_posts() ? $
 						printf(
 							/* translators: %s: parent category name */
 							esc_html__( 'Browse %s', 'sassy-strides' ),
-							esc_html( $sassystrides_parent_term instanceof WP_Term ? $sassystrides_parent_term->name : 'Fashion' )
+							esc_html( $sassystrides_parent_term->name )
 						);
 						?>
 					</h3>
 					<nav class="category-sidebar__nav">
-						<?php foreach ( $sassystrides_subcategories as $sassystrides_browse_item ) : ?>
+						<?php foreach ( $sassystrides_sibling_subcategories as $sassystrides_browse_item ) : ?>
+							<?php $sassystrides_browse_is_active = ( $sassystrides_browse_item['slug'] === $sassystrides_subcategory['slug'] ); ?>
 							<a
-								href="<?php echo esc_url( home_url( '/' . $sassystrides_route_slug . '/' . $sassystrides_browse_item['slug'] . '/' ) ); ?>"
-								class="category-sidebar__link group block border-b border-ink/10 pb-4 transition last:border-0 last:pb-0"
+								href="<?php echo esc_url( home_url( '/' . $sassystrides_parent_slug . '/' . $sassystrides_browse_item['slug'] . '/' ) ); ?>"
+								class="category-sidebar__link group block border-b border-ink/10 pb-4 transition last:border-0 last:pb-0<?php echo $sassystrides_browse_is_active ? ' is-active' : ''; ?>"
+								<?php echo $sassystrides_browse_is_active ? ' aria-current="page"' : ''; ?>
 							>
 								<span class="category-sidebar__link-title block text-[0.62rem] font-semibold uppercase tracking-[0.12em]">
 									<?php echo esc_html( $sassystrides_browse_item['name'] ); ?>
@@ -182,7 +206,7 @@ $sassystrides_hero_thumbnail_id = $sassystrides_category_query->have_posts() ? $
 
 			<!-- CategoryPostGrid -->
 			<section id="category-posts" class="min-w-0">
-				<h2 class="serif-title text-3xl uppercase leading-none text-espresso sm:text-4xl"><?php single_cat_title(); ?></h2>
+				<h2 class="serif-title text-3xl uppercase leading-none text-espresso sm:text-4xl"><?php echo esc_html( $sassystrides_subcategory['name'] ); ?></h2>
 
 				<div class="category-posts__toolbar flex flex-col gap-3 border-y border-ink/10 text-[0.58rem] uppercase tracking-[0.16em] text-taupe sm:flex-row sm:items-center sm:justify-between">
 					<form method="get" class="flex items-center gap-3">
@@ -202,7 +226,7 @@ $sassystrides_hero_thumbnail_id = $sassystrides_category_query->have_posts() ? $
 							printf(
 								/* translators: %1$d: result count, shown twice as "Showing 1-N of N results" */
 								esc_html__( 'Showing 1-%1$d of %1$d results', 'sassy-strides' ),
-								(int) $sassystrides_category_query->post_count
+								count( $sassystrides_filtered_posts )
 							);
 							?>
 						</span>
@@ -237,7 +261,7 @@ $sassystrides_hero_thumbnail_id = $sassystrides_category_query->have_posts() ? $
 					</div>
 				</div>
 
-				<?php if ( $sassystrides_category_query->have_posts() ) : ?>
+				<?php if ( ! empty( $sassystrides_filtered_posts ) ) : ?>
 					<div class="editorial-magazine-grid editorial-magazine-grid--secondary<?php echo 'list' === $sassystrides_view ? ' editorial-magazine-grid--list' : ''; ?>">
 
 						<?php if ( $sassystrides_show_featured_ads ) : ?>
@@ -255,8 +279,10 @@ $sassystrides_hero_thumbnail_id = $sassystrides_category_query->have_posts() ? $
 
 						<?php
 						$sassystrides_card_index = 0;
-						while ( $sassystrides_category_query->have_posts() ) :
-							$sassystrides_category_query->the_post();
+						foreach ( $sassystrides_filtered_posts as $sassystrides_grid_post ) :
+							global $post;
+							$post = $sassystrides_grid_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+							setup_postdata( $post );
 							++$sassystrides_card_index;
 							?>
 
@@ -309,45 +335,41 @@ $sassystrides_hero_thumbnail_id = $sassystrides_category_query->have_posts() ? $
 								</div>
 							<?php endif; ?>
 
-						<?php endwhile; ?>
+						<?php endforeach; ?>
 
 						<?php wp_reset_postdata(); ?>
-
-						<?php // TODO: CategoryThreeCubeAds — port once CategoryThreeCubeAds.jsx + constants/categoryCubeAds.js are provided. ?>
 
 					</div>
 				<?php else : ?>
 					<div class="category-posts__empty border border-ink/10 bg-porcelain p-10 text-center">
 						<p class="micro-label text-bronze"><?php esc_html_e( 'No Stories Found', 'sassy-strides' ); ?></p>
 						<h3 class="serif-title mt-3 text-4xl leading-none text-espresso">
-							<?php esc_html_e( 'No articles found in this category.', 'sassy-strides' ); ?>
+							<?php
+							printf(
+								/* translators: %s: subcategory name */
+								esc_html__( 'No articles found in %s yet.', 'sassy-strides' ),
+								esc_html( $sassystrides_subcategory['name'] )
+							);
+							?>
 						</h3>
 					</div>
 				<?php endif; ?>
 			</section>
 
 			<!-- TrendingWidget -->
-			<?php
-			$sassystrides_trending_query = new WP_Query(
-				array(
-					'cat'            => $sassystrides_current_term->term_id,
-					'post_status'    => 'publish',
-					'posts_per_page' => 5,
-					'orderby'        => 'date',
-					'order'          => 'DESC',
-				)
-			);
-			?>
+			<?php $sassystrides_trending_posts = array_slice( $sassystrides_filtered_posts, 0, 5 ); ?>
 			<aside class="category-page__aside lg:col-span-2 xl:col-span-1">
 				<div class="category-page__aside-inner sticky top-24">
-					<?php if ( $sassystrides_trending_query->have_posts() ) : ?>
+					<?php if ( ! empty( $sassystrides_trending_posts ) ) : ?>
 						<section class="border border-ink/10 bg-porcelain p-5">
 							<h3 class="trending-widget__heading micro-label text-espresso"><?php esc_html_e( 'Trending Now', 'sassy-strides' ); ?></h3>
 							<div class="trending-widget__list">
 								<?php
 								$sassystrides_trending_index = 0;
-								while ( $sassystrides_trending_query->have_posts() ) :
-									$sassystrides_trending_query->the_post();
+								foreach ( $sassystrides_trending_posts as $sassystrides_trending_post ) :
+									global $post;
+									$post = $sassystrides_trending_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+									setup_postdata( $post );
 									++$sassystrides_trending_index;
 									?>
 									<a href="<?php the_permalink(); ?>" class="trending-widget__item group grid grid-cols-[60px_1fr] items-center gap-3 border-b border-ink/10 pb-4 last:border-b-0 last:pb-0">
@@ -369,7 +391,7 @@ $sassystrides_hero_thumbnail_id = $sassystrides_category_query->have_posts() ? $
 											<h4 class="trending-widget__title serif-title text-espresso transition group-hover:text-bronze"><?php the_title(); ?></h4>
 										</div>
 									</a>
-								<?php endwhile; ?>
+								<?php endforeach; ?>
 								<?php wp_reset_postdata(); ?>
 							</div>
 						</section>
