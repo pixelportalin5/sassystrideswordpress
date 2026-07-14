@@ -256,16 +256,16 @@ while ( have_posts() ) :
 					$post = $sassystrides_previous_post;
 					setup_postdata( $post );
 					?>
-					<a href="<?php the_permalink(); ?>" class="group grid items-center gap-4 border border-ink/10 bg-porcelain p-4 transition hover:bg-parchment sm:grid-cols-[116px_1fr]">
-						<?php the_post_thumbnail( 'thumbnail', array( 'class' => 'h-28 w-28 shrink-0 object-cover saturate-[0.75] transition group-hover:saturate-100', 'loading' => 'lazy' ) ); ?>
+					<a href="<?php the_permalink(); ?>" class="group grid items-center gap-2 border border-ink/10 bg-porcelain p-2 transition hover:bg-parchment sm:grid-cols-[58px_1fr]">
+						<?php the_post_thumbnail( 'thumbnail', array( 'class' => 'h-14 w-14 shrink-0 object-cover saturate-[0.75] transition group-hover:saturate-100', 'loading' => 'lazy' ) ); ?>
 						<span class="flex min-w-0 flex-col justify-center">
-							<span class="mb-2 inline-flex items-center gap-2 text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-taupe">
-								<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<span class="mb-1 inline-flex items-center gap-1 text-[0.52rem] font-semibold uppercase tracking-[0.18em] text-taupe">
+								<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 									<path d="m12 19-7-7 7-7" /><path d="M19 12H5" />
 								</svg>
 								<?php esc_html_e( 'Previous Post', 'sassy-strides' ); ?>
 							</span>
-							<span class="serif-title line-clamp-2 text-3xl leading-none text-espresso transition group-hover:text-bronze"><?php the_title(); ?></span>
+							<span class="serif-title line-clamp-2 text-base leading-tight text-espresso transition group-hover:text-bronze"><?php the_title(); ?></span>
 						</span>
 					</a>
 					<?php wp_reset_postdata(); ?>
@@ -279,17 +279,17 @@ while ( have_posts() ) :
 					$post = $sassystrides_next_post;
 					setup_postdata( $post );
 					?>
-					<a href="<?php the_permalink(); ?>" class="group grid items-center gap-4 border border-ink/10 bg-porcelain p-4 transition hover:bg-parchment sm:grid-cols-[1fr_116px] sm:text-right">
+					<a href="<?php the_permalink(); ?>" class="group grid items-center gap-2 border border-ink/10 bg-porcelain p-2 transition hover:bg-parchment sm:grid-cols-[1fr_58px] sm:text-right">
 						<span class="flex min-w-0 flex-col justify-center">
-							<span class="mb-2 inline-flex items-center justify-end gap-2 text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-taupe">
+							<span class="mb-1 inline-flex items-center justify-end gap-1 text-[0.52rem] font-semibold uppercase tracking-[0.18em] text-taupe">
 								<?php esc_html_e( 'Next Post', 'sassy-strides' ); ?>
-								<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+								<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 									<path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
 								</svg>
 							</span>
-							<span class="serif-title line-clamp-2 text-3xl leading-none text-espresso transition group-hover:text-bronze"><?php the_title(); ?></span>
+							<span class="serif-title line-clamp-2 text-base leading-tight text-espresso transition group-hover:text-bronze"><?php the_title(); ?></span>
 						</span>
-						<?php the_post_thumbnail( 'thumbnail', array( 'class' => 'h-28 w-28 shrink-0 object-cover saturate-[0.75] transition group-hover:saturate-100', 'loading' => 'lazy' ) ); ?>
+						<?php the_post_thumbnail( 'thumbnail', array( 'class' => 'h-14 w-14 shrink-0 object-cover saturate-[0.75] transition group-hover:saturate-100', 'loading' => 'lazy' ) ); ?>
 					</a>
 					<?php wp_reset_postdata(); ?>
 				<?php else : ?>

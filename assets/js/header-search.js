@@ -36,9 +36,9 @@
 		var form = root.querySelector( 'form' );
 		var input = root.querySelector( '.site-header__search-input' );
 		var list = root.querySelector( '.site-header__search-suggestions' );
-		var restUrl = ( window.sassystridesSearch && window.sassystridesSearch.restUrl ) || '';
+		var ajaxUrl = ( window.sassystridesSearch && window.sassystridesSearch.ajaxUrl ) || '';
 
-		if ( ! toggle || ! input || ! list ) {
+		if ( ! toggle || ! input || ! list || ! ajaxUrl ) {
 			return;
 		}
 
@@ -120,7 +120,7 @@
 				button.id = 'site-header-search-option-' + index;
 				button.setAttribute( 'role', 'option' );
 				button.className = 'site-header__search-option';
-				button.textContent = stripHtml( post.title && post.title.rendered ? post.title.rendered : post.title );
+				button.textContent = stripHtml( post.title );
 				button.addEventListener( 'mouseenter', function () {
 					setActive( index );
 				} );
@@ -144,16 +144,11 @@
 		}
 
 		function runSearch( query ) {
-			if ( ! restUrl ) {
-				return;
-			}
-
 			var thisRequest = ++requestId;
 			renderStatus( 'Searching...' );
 
-			var url = restUrl + ( restUrl.indexOf( '?' ) === -1 ? '?' : '&' ) +
-				'search=' + encodeURIComponent( query ) +
-				'&per_page=8&_fields=id,link,title';
+			var url = ajaxUrl + ( ajaxUrl.indexOf( '?' ) === -1 ? '?' : '&' ) +
+				'action=sassystrides_search&query=' + encodeURIComponent( query );
 
 			window
 				.fetch( url, { credentials: 'same-origin' } )

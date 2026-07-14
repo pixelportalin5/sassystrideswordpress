@@ -284,6 +284,167 @@ function sassystrides_subcategory_template( $template ) {
 add_filter( 'template_include', 'sassystrides_subcategory_template' );
 
 /**
+ * Post permalinks: /{category}/{subcategory}/{postname}/, ported from
+ * utils/postRoutes.js's getPostPath() so links generated here match the
+ * original SPA's URLs exactly (e.g. /fashion/clothing/my-post-slug). The
+ * category/subcategory segments are cosmetic — like the SPA's router,
+ * incoming requests are resolved purely by the trailing postname segment
+ * (see sassystrides_register_post_permalink_rewrites() below), so a post
+ * always resolves correctly even if its resolved category/subcategory
+ * ever drifts from what's baked into an already-shared link.
+ */
+function sassystrides_slugify( $value ) {
+	$value = strtolower( trim( (string) $value ) );
+	$value = str_replace( '&', 'and', $value );
+	$value = preg_replace( '/[^a-z0-9]+/', '-', $value );
+	return trim( $value, '-' );
+}
+
+function sassystrides_to_plain_text( $value ) {
+	$value = (string) $value;
+	$value = preg_replace( '/<[^>]+>/', ' ', $value );
+	$value = str_replace( '&nbsp;', ' ', $value );
+	$value = str_replace( '&amp;', '&', $value );
+	$value = preg_replace( '/\s+/', ' ', $value );
+	return trim( $value );
+}
+
+/**
+ * Mirrors resolveCategorySlug(): the post's primary category if it's one
+ * of the 5 top-level slugs, else 'fashion'.
+ */
+function sassystrides_resolve_post_category_slug( $post_id ) {
+	static $cache = array();
+
+	if ( isset( $cache[ $post_id ] ) ) {
+		return $cache[ $post_id ];
+	}
+
+	$slug       = 'fashion';
+	$categories = get_the_category( $post_id );
+
+	if ( ! empty( $categories ) ) {
+		$candidate = sassystrides_slugify( $categories[0]->slug );
+		if ( in_array( $candidate, array( 'fashion', 'beauty', 'lifestyle', 'trends', 'news' ), true ) ) {
+			$slug = $candidate;
+		}
+	}
+
+	$cache[ $post_id ] = $slug;
+	return $slug;
+}
+
+/**
+ * Mirrors resolveSubcategorySlug(): a direct tag match wins, otherwise the
+ * subcategory whose keywords appear most often across the post's title,
+ * excerpt, content, category, and tags — falling back to the parent's
+ * first subcategory, exactly like the SPA.
+ */
+function sassystrides_resolve_post_subcategory_slug( $post_id, $category_slug ) {
+	static $cache = array();
+	$cache_key = $post_id . ':' . $category_slug;
+
+	if ( isset( $cache[ $cache_key ] ) ) {
+		return $cache[ $cache_key ];
+	}
+
+	$subcategories = sassystrides_get_subcategories_by_parent( $category_slug );
+
+	if ( empty( $subcategories ) ) {
+		return $cache[ $cache_key ] = 'clothing'; // phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition
+	}
+
+	$tags      = get_the_tags( $post_id );
+	$tag_slugs = array();
+	$tag_names = array();
+
+	if ( $tags ) {
+		foreach ( $tags as $sassystrides_tag ) {
+			$tag_slugs[] = sassystrides_slugify( $sassystrides_tag->slug );
+			$tag_names[] = sassystrides_slugify( $sassystrides_tag->name );
+		}
+	}
+
+	foreach ( $subcategories as $sassystrides_sub ) {
+		if ( in_array( $sassystrides_sub['slug'], $tag_slugs, true ) ) {
+			return $cache[ $cache_key ] = $sassystrides_sub['slug']; // phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition
+		}
+	}
+
+	foreach ( $subcategories as $sassystrides_sub ) {
+		if ( in_array( sassystrides_slugify( $sassystrides_sub['name'] ), $tag_names, true ) ) {
+			return $cache[ $cache_key ] = $sassystrides_sub['slug']; // phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition
+		}
+	}
+
+	$haystack_parts = array(
+		get_the_title( $post_id ),
+		get_the_excerpt( $post_id ),
+		(string) get_post_field( 'post_content', $post_id ),
+	);
+
+	foreach ( get_the_category( $post_id ) as $sassystrides_cat ) {
+		$haystack_parts[] = $sassystrides_cat->name;
+	}
+	foreach ( $tag_names as $sassystrides_tag_name ) {
+		$haystack_parts[] = $sassystrides_tag_name;
+	}
+	foreach ( $tag_slugs as $sassystrides_tag_slug ) {
+		$haystack_parts[] = $sassystrides_tag_slug;
+	}
+
+	$search_text = sassystrides_slugify( implode( ' ', array_map( 'sassystrides_to_plain_text', $haystack_parts ) ) );
+
+	$best_match = $subcategories[0];
+	$best_score = 0;
+
+	foreach ( $subcategories as $sassystrides_sub ) {
+		$score = 0;
+		foreach ( $sassystrides_sub['keywords'] as $sassystrides_keyword ) {
+			$token = sassystrides_slugify( $sassystrides_keyword );
+			if ( '' !== $token && false !== strpos( $search_text, $token ) ) {
+				++$score;
+			}
+		}
+		if ( $score > $best_score ) {
+			$best_match = $sassystrides_sub;
+			$best_score = $score;
+		}
+	}
+
+	return $cache[ $cache_key ] = $best_match['slug']; // phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition
+}
+
+function sassystrides_post_permalink( $post_link, $post ) {
+	if ( ! ( $post instanceof WP_Post ) || 'post' !== $post->post_type || 'publish' !== $post->post_status ) {
+		return $post_link;
+	}
+
+	$category_slug    = sassystrides_resolve_post_category_slug( $post->ID );
+	$subcategory_slug = sassystrides_resolve_post_subcategory_slug( $post->ID, $category_slug );
+
+	return home_url( '/' . $category_slug . '/' . $subcategory_slug . '/' . $post->post_name . '/' );
+}
+add_filter( 'post_link', 'sassystrides_post_permalink', 10, 2 );
+
+/**
+ * Resolves incoming /{anything}/{anything}/{postname}/ requests straight
+ * to the post by its trailing slug segment — the leading 2 segments are
+ * cosmetic (same as the SPA's router, which only reads :slug out of
+ * /:categorySlug/:subSlug/:slug and ignores the rest). Registered after
+ * the category/subcategory listing rules above so more specific 1- and
+ * 2-segment matches (and their /page/N/ pagination) still win first.
+ */
+function sassystrides_register_post_permalink_rewrites() {
+	add_rewrite_rule(
+		'^[^/]+/[^/]+/([^/]+)/?$',
+		'index.php?post_type=post&name=$matches[1]',
+		'top'
+	);
+}
+add_action( 'init', 'sassystrides_register_post_permalink_rewrites' );
+
+/**
  * Shared social link list, mirrors constants/social.js. Used by footer.php
  * and page-contact.php so both stay in sync from a single source.
  */
@@ -651,8 +812,45 @@ function sassystrides_scripts() {
 		'sassystrides-header-search',
 		'sassystridesSearch',
 		array(
-			'restUrl' => esc_url_raw( rest_url( 'wp/v2/posts' ) ),
+			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 		)
 	);
 }
 add_action( 'wp_enqueue_scripts', 'sassystrides_scripts' );
+
+/**
+ * Header search AJAX endpoint. Uses admin-ajax.php rather than the REST
+ * API — REST routes are more commonly blocked/restricted by security
+ * plugins and some hosts, while admin-ajax.php is core WordPress
+ * plumbing that's essentially always reachable, logged in or not.
+ */
+function sassystrides_ajax_search() {
+	$sassystrides_query = isset( $_GET['query'] ) ? sanitize_text_field( wp_unslash( $_GET['query'] ) ) : '';
+
+	if ( mb_strlen( $sassystrides_query ) < 2 ) {
+		wp_send_json( array() );
+	}
+
+	$sassystrides_search_query = new WP_Query(
+		array(
+			's'                   => $sassystrides_query,
+			'post_status'         => 'publish',
+			'posts_per_page'      => 8,
+			'ignore_sticky_posts' => true,
+		)
+	);
+
+	$sassystrides_results = array();
+	foreach ( $sassystrides_search_query->posts as $sassystrides_result_post ) {
+		$sassystrides_results[] = array(
+			'id'    => $sassystrides_result_post->ID,
+			'title' => get_the_title( $sassystrides_result_post ),
+			'link'  => get_permalink( $sassystrides_result_post ),
+		);
+	}
+
+	wp_reset_postdata();
+	wp_send_json( $sassystrides_results );
+}
+add_action( 'wp_ajax_sassystrides_search', 'sassystrides_ajax_search' );
+add_action( 'wp_ajax_nopriv_sassystrides_search', 'sassystrides_ajax_search' );
