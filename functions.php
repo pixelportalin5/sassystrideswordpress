@@ -320,13 +320,23 @@ function sassystrides_resolve_post_category_slug( $post_id ) {
 		return $cache[ $post_id ];
 	}
 
-	$slug       = 'fashion';
-	$categories = get_the_category( $post_id );
+	$slug = 'fashion';
 
-	if ( ! empty( $categories ) ) {
-		$candidate = sassystrides_slugify( $categories[0]->slug );
-		if ( in_array( $candidate, array( 'fashion', 'beauty', 'lifestyle', 'trends', 'news' ), true ) ) {
-			$slug = $candidate;
+	// wp_get_post_categories() rather than get_the_category() — the latter
+	// re-sorts a post's categories alphabetically, so a post assigned to
+	// both e.g. "Beauty" and a leftover "Uncategorized"/import category
+	// could have the *wrong* one land at index 0. This checks every
+	// assigned category and takes the first one that's actually one of
+	// our 5 top-level slugs, in whichever order WordPress assigned them.
+	$sassystrides_terms = wp_get_post_categories( $post_id, array( 'fields' => 'all' ) );
+
+	if ( ! empty( $sassystrides_terms ) && ! is_wp_error( $sassystrides_terms ) ) {
+		foreach ( $sassystrides_terms as $sassystrides_term ) {
+			$candidate = sassystrides_slugify( $sassystrides_term->slug );
+			if ( in_array( $candidate, array( 'fashion', 'beauty', 'lifestyle', 'trends', 'news' ), true ) ) {
+				$slug = $candidate;
+				break;
+			}
 		}
 	}
 
