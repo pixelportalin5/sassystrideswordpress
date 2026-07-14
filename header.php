@@ -3,46 +3,121 @@
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 	<?php wp_head(); ?>
 </head>
-<body <?php body_class( 'bg-white text-neutral-900 antialiased' ); ?>>
+<body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
-<header class="w-full border-b border-neutral-200">
-	<div class="max-w-7xl mx-auto flex justify-between items-center py-4 px-6">
+<?php
+$sassystrides_logo_id  = get_theme_mod( 'custom_logo' );
+$sassystrides_logo_url = $sassystrides_logo_id
+	? wp_get_attachment_image_url( $sassystrides_logo_id, 'full' )
+	: 'https://sassystrides.com/wp-content/uploads/2026/06/sassystrides2light_logo-removebg-preview-e1781683275677.png'; // TODO: remove fallback once a logo is set via Customizer > Site Identity.
 
-		<div class="flex-shrink-0">
-			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="flex items-center">
-				<?php if ( function_exists( 'the_custom_logo' ) && has_custom_logo() ) : ?>
-					<?php the_custom_logo(); ?>
-				<?php else : ?>
-					<span class="text-2xl font-serif tracking-widest uppercase">
-						<?php bloginfo( 'name' ); ?>
-					</span>
-				<?php endif; ?>
-			</a>
+$sassystrides_social_links = array(
+	array(
+		'label' => 'Instagram',
+		'href'  => 'https://www.instagram.com/thesassy_strides/',
+	),
+	array(
+		'label' => 'Facebook',
+		'href'  => 'https://www.facebook.com/profile.php?id=61590864083802',
+	),
+); // TODO: move to Customizer/ACF options once available (mirrors constants/social.js).
+?>
+
+<header class="site-header sticky top-0 z-50 border-b border-ink/10 bg-ivory/94 backdrop-blur-xl">
+	<div class="site-header__top editorial-container">
+		<div class="site-header__top-spacer" aria-hidden="true"></div>
+
+		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-header__brand" aria-label="<?php esc_attr_e( 'Sassy Strides homepage', 'sassy-strides' ); ?>">
+			<img
+				src="<?php echo esc_url( $sassystrides_logo_url ); ?>"
+				alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>"
+				class="site-header__logo-image"
+				loading="eager"
+				decoding="async"
+				fetchpriority="high"
+			>
+		</a>
+
+		<div class="site-header__top-actions">
+
+			<div class="site-header__search" role="search">
+				<button
+					type="button"
+					class="site-header__search-toggle"
+					aria-label="<?php esc_attr_e( 'Open search', 'sassy-strides' ); ?>"
+					aria-expanded="false"
+				>
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<circle cx="11" cy="11" r="8" />
+						<path d="m21 21-4.3-4.3" />
+					</svg>
+				</button>
+
+				<div class="site-header__search-panel">
+					<form role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+						<label class="sr-only" for="site-header-search-input">
+							<?php esc_html_e( 'Search stories', 'sassy-strides' ); ?>
+						</label>
+						<input
+							id="site-header-search-input"
+							type="search"
+							name="s"
+							value="<?php echo esc_attr( get_search_query() ); ?>"
+							placeholder="<?php esc_attr_e( 'Search stories', 'sassy-strides' ); ?>"
+							class="site-header__search-input"
+							autocomplete="off"
+						>
+					</form>
+					<?php // TODO: live "site-header__search-suggestions" dropdown requires a JS/AJAX rebuild of HeaderSearch.jsx. ?>
+				</div>
+			</div>
+
+			<div class="site-header__social">
+				<?php foreach ( $sassystrides_social_links as $sassystrides_social_link ) : ?>
+					<a
+						href="<?php echo esc_url( $sassystrides_social_link['href'] ); ?>"
+						class="site-header__social-link"
+						target="_blank"
+						rel="noopener noreferrer"
+						aria-label="<?php echo esc_attr( $sassystrides_social_link['label'] ); ?>"
+					>
+						<?php if ( 'Instagram' === $sassystrides_social_link['label'] ) : ?>
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+								<rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+								<path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+								<line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+							</svg>
+						<?php elseif ( 'Facebook' === $sassystrides_social_link['label'] ) : ?>
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+								<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+							</svg>
+						<?php endif; ?>
+					</a>
+				<?php endforeach; ?>
+			</div>
+
 		</div>
+	</div>
 
-		<nav class="hidden md:flex items-center" aria-label="<?php esc_attr_e( 'Primary Navigation', 'sassy-strides' ); ?>">
+	<nav class="site-header__nav" aria-label="<?php esc_attr_e( 'Primary', 'sassy-strides' ); ?>">
+		<div class="site-header__nav-inner editorial-container">
 			<?php
 			wp_nav_menu(
 				array(
 					'theme_location' => 'primary',
 					'container'      => false,
-					'menu_class'     => 'flex items-center space-x-8 text-sm uppercase tracking-wide',
+					'items_wrap'     => '%3$s',
+					'walker'         => new SassyStrides_Nav_Walker(),
 					'fallback_cb'    => false,
 				)
 			);
 			?>
-		</nav>
-
-		<div class="flex items-center space-x-4">
-			<button type="button" class="p-2" aria-label="<?php esc_attr_e( 'Search', 'sassy-strides' ); ?>">
-				<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0a7.5 7.5 0 10-10.6-10.6 7.5 7.5 0 0010.6 10.6z" />
-				</svg>
-			</button>
 		</div>
-
-	</div>
+	</nav>
 </header>
