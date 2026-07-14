@@ -8,6 +8,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Forminator form ID used on page-contact.php. Mirrors
+ * constants/forminator.js (FORMINTATOR_FORM_ID), which defaulted to the
+ * "1669" form already published on the WordPress backend.
+ */
+if ( ! defined( 'SASSYSTRIDES_FORMINATOR_FORM_ID' ) ) {
+	define( 'SASSYSTRIDES_FORMINATOR_FORM_ID', 1669 );
+}
+
+/**
  * Theme setup.
  */
 function sassystrides_setup() {
@@ -82,6 +91,23 @@ function sassystrides_get_category_url( $slug ) {
 	}
 
 	return home_url( '/' . $slug . '/' );
+}
+
+/**
+ * Shared social link list, mirrors constants/social.js. Used by footer.php
+ * and page-contact.php so both stay in sync from a single source.
+ */
+function sassystrides_get_social_links() {
+	return array(
+		array(
+			'label' => 'Instagram',
+			'href'  => 'https://www.instagram.com/thesassy_strides/',
+		),
+		array(
+			'label' => 'Facebook',
+			'href'  => 'https://www.facebook.com/profile.php?id=61590864083802',
+		),
+	); // TODO: move to Customizer/ACF options once available.
 }
 
 /**
@@ -349,5 +375,15 @@ function sassystrides_scripts() {
 		array(),
 		wp_get_theme()->get( 'Version' )
 	);
+
+	if ( is_page( 'faq' ) ) {
+		wp_enqueue_script(
+			'sassystrides-faq-accordion',
+			get_template_directory_uri() . '/assets/js/faq-accordion.js',
+			array(),
+			wp_get_theme()->get( 'Version' ),
+			true
+		);
+	}
 }
 add_action( 'wp_enqueue_scripts', 'sassystrides_scripts' );

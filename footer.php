@@ -4,16 +4,7 @@ $sassystrides_footer_logo_url = $sassystrides_footer_logo_id
 	? wp_get_attachment_image_url( $sassystrides_footer_logo_id, 'full' )
 	: 'https://sassystrides.com/wp-content/uploads/2026/06/sassystrides2light_logo-removebg-preview-e1781683275677.png'; // TODO: remove fallback once a logo is set via Customizer > Site Identity.
 
-$sassystrides_footer_social_links = array(
-	array(
-		'label' => 'Instagram',
-		'href'  => 'https://www.instagram.com/thesassy_strides/',
-	),
-	array(
-		'label' => 'Facebook',
-		'href'  => 'https://www.facebook.com/profile.php?id=61590864083802',
-	),
-); // TODO: move to Customizer/ACF options once available (mirrors constants/social.js).
+$sassystrides_footer_social_links = sassystrides_get_social_links();
 
 $sassystrides_footer_category_links = array(
 	array(
