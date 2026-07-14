@@ -190,13 +190,12 @@ $sassystrides_hero_post = ! empty( $sassystrides_filtered_posts ) ? $sassystride
 
 				<?php if ( $sassystrides_show_featured_ads ) : ?>
 					<div class="category-sidebar__ads">
-						<?php foreach ( array( 3, 6 ) as $sassystrides_sidebar_slot ) : ?>
-							<?php $sassystrides_sidebar_ad_id = sassystrides_get_ad_id( 'category', $sassystrides_sidebar_slot ); ?>
+						<?php foreach ( sassystrides_get_category_sidebar_ad_ids() as $sassystrides_sidebar_ad_id ) : ?>
 							<div class="category-sidebar__ad-slot">
 								<?php if ( function_exists( 'the_ad' ) && $sassystrides_sidebar_ad_id ) : ?>
 									<?php the_ad( $sassystrides_sidebar_ad_id ); ?>
 								<?php else : ?>
-									<!-- Advanced Ads placeholder: category slot <?php echo esc_html( $sassystrides_sidebar_slot ); ?> -->
+									<!-- Advanced Ads placeholder: category sidebar ad <?php echo esc_html( $sassystrides_sidebar_ad_id ); ?> -->
 								<?php endif; ?>
 							</div>
 						<?php endforeach; ?>

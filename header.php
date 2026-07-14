@@ -12,10 +12,11 @@
 <?php wp_body_open(); ?>
 
 <?php
-$sassystrides_logo_id  = get_theme_mod( 'custom_logo' );
-$sassystrides_logo_url = $sassystrides_logo_id
-	? wp_get_attachment_image_url( $sassystrides_logo_id, 'full' )
-	: 'https://olive-rail-428908.hostingersite.com/wp-content/uploads/2026/07/sassystrides2light_logo-removebg-preview-e1781683275677-2.webp'; // Fallback used until a logo is set via Customizer > Site Identity.
+// Hardcoded rather than read from get_theme_mod( 'custom_logo' ) — a
+// different logo was previously set via Customizer > Site Identity and
+// kept overriding this URL. Set/replace the Customizer logo if you want
+// that to take priority again instead.
+$sassystrides_logo_url = 'https://olive-rail-428908.hostingersite.com/wp-content/uploads/2026/07/sassystrides2light_logo-removebg-preview-e1781683275677-2.webp';
 
 $sassystrides_social_links = array(
 	array(

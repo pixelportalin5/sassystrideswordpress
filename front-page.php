@@ -46,12 +46,17 @@ $sassystrides_has_any_posts = (bool) wp_count_posts()->publish;
 			// Prefer a post tagged 'hero-featured' for editorial control; if
 			// none exists yet, fall back to the single latest published post
 			// (Home.jsx / HeroSection.jsx's real default: hero = posts[0]),
-			// so the hero never renders blank on a fresh site.
+			// so the hero never renders blank on a fresh site. Either way,
+			// the hero is restricted to Fashion/Beauty/Lifestyle/Trends —
+			// News is intentionally excluded (site owner's request).
+			$sassystrides_hero_category_ids = sassystrides_get_featured_category_ids();
+
 			$sassystrides_hero_query = new WP_Query(
 				array(
 					'posts_per_page' => 1,
 					'post_status'    => 'publish',
 					'tag'            => 'hero-featured',
+					'category__in'   => $sassystrides_hero_category_ids,
 				)
 			);
 
@@ -63,6 +68,7 @@ $sassystrides_has_any_posts = (bool) wp_count_posts()->publish;
 						'orderby'             => 'date',
 						'order'               => 'DESC',
 						'ignore_sticky_posts' => true,
+						'category__in'        => $sassystrides_hero_category_ids,
 					)
 				);
 			}
@@ -166,6 +172,18 @@ $sassystrides_has_any_posts = (bool) wp_count_posts()->publish;
 			 * Each tile now queries its own category directly via WP_Query instead
 			 * of searching a shared posts array for a matching categoryName.
 			 */
+			// Fallback pool for tiles whose category has no thumbnail-bearing
+			// post yet — mirrors CategoryGrid.jsx's `|| posts[index]`, which
+			// always shows *some* image rather than leaving a tile blank.
+			$sassystrides_tile_fallback_posts = get_posts(
+				array(
+					'posts_per_page' => 5,
+					'post_status'    => 'publish',
+					'orderby'        => 'date',
+					'order'          => 'DESC',
+				)
+			);
+
 			$sassystrides_category_tiles = array(
 				array(
 					'name'        => 'Fashion',
@@ -199,7 +217,7 @@ $sassystrides_has_any_posts = (bool) wp_count_posts()->publish;
 					<div class="homepage-category-section__main">
 
 						<div class="homepage-category-grid">
-							<?php foreach ( $sassystrides_category_tiles as $sassystrides_tile ) : ?>
+							<?php foreach ( $sassystrides_category_tiles as $sassystrides_tile_index => $sassystrides_tile ) : ?>
 								<?php
 								$sassystrides_tile_posts = get_posts(
 									array(
@@ -211,6 +229,10 @@ $sassystrides_has_any_posts = (bool) wp_count_posts()->publish;
 									)
 								);
 								$sassystrides_tile_post = ! empty( $sassystrides_tile_posts ) ? $sassystrides_tile_posts[0] : null;
+
+								if ( ( ! $sassystrides_tile_post || ! has_post_thumbnail( $sassystrides_tile_post->ID ) ) && ! empty( $sassystrides_tile_fallback_posts ) ) {
+									$sassystrides_tile_post = $sassystrides_tile_fallback_posts[ $sassystrides_tile_index % count( $sassystrides_tile_fallback_posts ) ];
+								}
 								?>
 								<a href="<?php echo esc_url( sassystrides_get_category_url( $sassystrides_tile['slug'] ) ); ?>" class="homepage-category-grid__tile group">
 									<?php if ( $sassystrides_tile_post && has_post_thumbnail( $sassystrides_tile_post->ID ) ) : ?>

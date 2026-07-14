@@ -306,9 +306,39 @@ function sassystrides_get_ad_id( $page, $slot ) {
  * FEATURED_PAGE_SLUGS.
  */
 function sassystrides_is_featured_page( $slug ) {
-	$featured_slugs = array( 'fashion', 'beauty', 'lifestyle', 'trends' );
+	return in_array( $slug, sassystrides_get_featured_category_slugs(), true );
+}
 
-	return in_array( $slug, $featured_slugs, true );
+/**
+ * The 4 top-level category slugs eligible for the extra Advanced Ads
+ * placements and, per site owner's request, the only categories the
+ * homepage hero post can be pulled from (News is excluded from both).
+ */
+function sassystrides_get_featured_category_slugs() {
+	return array( 'fashion', 'beauty', 'lifestyle', 'trends' );
+}
+
+/**
+ * Resolves sassystrides_get_featured_category_slugs() to term IDs, for use
+ * with WP_Query's 'category__in'. Cached per-request since it's called on
+ * every front-page.php hero query.
+ */
+function sassystrides_get_featured_category_ids() {
+	static $ids = null;
+
+	if ( null !== $ids ) {
+		return $ids;
+	}
+
+	$ids = array();
+	foreach ( sassystrides_get_featured_category_slugs() as $slug ) {
+		$term = get_term_by( 'slug', $slug, 'category' );
+		if ( $term && ! is_wp_error( $term ) ) {
+			$ids[] = $term->term_id;
+		}
+	}
+
+	return $ids;
 }
 
 /**
@@ -317,6 +347,14 @@ function sassystrides_is_featured_page( $slug ) {
  */
 function sassystrides_get_category_cube_ad_ids() {
 	return array( 2293, 2294, 2295 );
+}
+
+/**
+ * The 3 category sidebar ad unit IDs, in display order. Mirrors
+ * CategorySidebar.jsx's SIDEBAR_AD_IDS = ['1611', '1605', '1600'].
+ */
+function sassystrides_get_category_sidebar_ad_ids() {
+	return array( 1611, 1605, 1600 );
 }
 
 /**
@@ -561,5 +599,14 @@ function sassystrides_scripts() {
 			true
 		);
 	}
+
+	// Header search panel lives in every page's header.php, so this loads sitewide.
+	wp_enqueue_script(
+		'sassystrides-header-search',
+		get_template_directory_uri() . '/assets/js/header-search.js',
+		array(),
+		wp_get_theme()->get( 'Version' ),
+		true
+	);
 }
 add_action( 'wp_enqueue_scripts', 'sassystrides_scripts' );
