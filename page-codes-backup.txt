@@ -1,0 +1,840 @@
+================================================================================
+SASSY STRIDES — RAW HTML BACKUP FOR STATIC PAGE TEMPLATES
+================================================================================
+
+How to use this file:
+
+1. In wp-admin, go to Pages and open (or create) the Page with the slug
+   noted below each section (About = /about, Advertise = /advertise, etc).
+2. Add a "Custom HTML" block to that Page's content.
+3. Copy everything between the "===== START =====" and "===== END ====="
+   markers for that page and paste it into the block.
+4. Publish/update the Page.
+
+Notes:
+- All URLs below are site-relative (e.g. "/fashion/") so they'll work on
+  any domain (staging, production, etc.) without editing.
+- The Contact page block includes the literal Forminator shortcode
+  [forminator_form id="1669"] — WordPress still processes shortcodes
+  inside Custom HTML blocks because the whole page content passes through
+  do_shortcode() via the_content(), so this will render the real form.
+- The FAQ accordion's open/close behavior still works after pasting this,
+  because assets/js/faq-accordion.js targets the same class names
+  (.faq-accordion__item, .faq-accordion__trigger, etc.) regardless of
+  whether the markup came from PHP or a Custom HTML block.
+- template-parts/editorial-breadcrumb.php and
+  template-parts/legal-article-layout.php are no longer used by any PHP
+  file after this change (their markup is now baked directly into the
+  blocks below). They're left in the theme in case you want to revert.
+
+
+================================================================================
+FILE: page-about.php  →  WordPress Page slug: about  (/about)
+================================================================================
+===== START =====
+<div class="min-h-screen bg-ivory text-ink">
+
+	<main class="static-page static-page--about pb-16">
+
+		<section class="static-page__hero editorial-container">
+			<span class="static-page__badge">
+				<span class="static-page__badge-dot" aria-hidden="true"></span>
+				Our Story
+			</span>
+			<h1 class="static-page__title serif-title">
+				About <span class="static-page__title-accent">Sassy Strides.</span>
+			</h1>
+			<p class="static-page__lead">
+				Sassy Strides is a refined digital fashion magazine for elevated style, contemporary beauty, and editorial culture.
+			</p>
+		</section>
+
+		<section class="editorial-container static-page__intro">
+			<div class="static-page__intro-copy">
+				<p class="micro-label text-bronze">The Editorial Desk</p>
+				<p class="static-page__intro-text">
+					We publish considered fashion journalism for readers who care about craft, quality, and the details that define personal style. From runway recaps and beauty edits to lifestyle features and industry news, Sassy Strides is built for women who want their feed to feel as polished as their closet.
+				</p>
+			</div>
+			<div class="static-page__intro-panel">
+				<p class="serif-title static-page__intro-quote">
+					&ldquo;Style is a language — and we help you speak it fluently.&rdquo;
+				</p>
+			</div>
+		</section>
+
+		<section class="editorial-container static-page__cards static-page__cards--about">
+			<article class="static-page__card">
+				<div class="static-page__card-icon" aria-hidden="true">
+					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" />
+						<path d="M20 3v4" />
+						<path d="M22 5h-4" />
+						<path d="M4 17v2" />
+						<path d="M5 18H3" />
+					</svg>
+				</div>
+				<h2 class="static-page__card-title">Inspire</h2>
+				<p class="static-page__card-copy">We celebrate confident self-expression through runway notes, street style, and stories that spark fresh ideas for the modern wardrobe.</p>
+			</article>
+			<article class="static-page__card">
+				<div class="static-page__card-icon" aria-hidden="true">
+					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M6 3h12l4 6-10 13L2 9Z" />
+						<path d="M11 3 8 9l4 13 4-13-3-6" />
+						<path d="M2 9h20" />
+					</svg>
+				</div>
+				<h2 class="static-page__card-title">Elevate</h2>
+				<p class="static-page__card-copy">Every feature is edited with a luxury lens — refined photography, thoughtful curation, and culture-forward storytelling across fashion and beauty.</p>
+			</article>
+			<article class="static-page__card">
+				<div class="static-page__card-icon" aria-hidden="true">
+					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+						<polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+						<polyline points="16 7 22 7 22 13" />
+					</svg>
+				</div>
+				<h2 class="static-page__card-title">Empower</h2>
+				<p class="static-page__card-copy">Sassy Strides gives readers practical style intelligence — from office essentials to red-carpet moments — so they can dress with intention every day.</p>
+			</article>
+		</section>
+
+		<section class="editorial-container static-page__coverage">
+			<div class="static-page__coverage-head">
+				<h2 class="micro-label text-espresso">What We Cover</h2>
+				<p class="static-page__coverage-lead">
+					Explore the categories that shape our editorial calendar.
+				</p>
+			</div>
+			<div class="static-page__coverage-grid">
+				<a href="/fashion/" class="static-page__coverage-link group">
+					<span class="serif-title text-2xl uppercase leading-none text-espresso transition group-hover:text-bronze">Fashion</span>
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-bronze opacity-0 transition group-hover:opacity-100" aria-hidden="true">
+						<path d="M7 7h10v10" />
+						<path d="M7 17 17 7" />
+					</svg>
+				</a>
+				<a href="/beauty/" class="static-page__coverage-link group">
+					<span class="serif-title text-2xl uppercase leading-none text-espresso transition group-hover:text-bronze">Beauty</span>
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-bronze opacity-0 transition group-hover:opacity-100" aria-hidden="true">
+						<path d="M7 7h10v10" />
+						<path d="M7 17 17 7" />
+					</svg>
+				</a>
+				<a href="/lifestyle/" class="static-page__coverage-link group">
+					<span class="serif-title text-2xl uppercase leading-none text-espresso transition group-hover:text-bronze">Lifestyle</span>
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-bronze opacity-0 transition group-hover:opacity-100" aria-hidden="true">
+						<path d="M7 7h10v10" />
+						<path d="M7 17 17 7" />
+					</svg>
+				</a>
+				<a href="/trends/" class="static-page__coverage-link group">
+					<span class="serif-title text-2xl uppercase leading-none text-espresso transition group-hover:text-bronze">Trends</span>
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-bronze opacity-0 transition group-hover:opacity-100" aria-hidden="true">
+						<path d="M7 7h10v10" />
+						<path d="M7 17 17 7" />
+					</svg>
+				</a>
+				<a href="/news/" class="static-page__coverage-link group">
+					<span class="serif-title text-2xl uppercase leading-none text-espresso transition group-hover:text-bronze">News</span>
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-bronze opacity-0 transition group-hover:opacity-100" aria-hidden="true">
+						<path d="M7 7h10v10" />
+						<path d="M7 17 17 7" />
+					</svg>
+				</a>
+			</div>
+		</section>
+
+		<section class="editorial-container static-page__cta-wrap">
+			<div class="static-page__cta static-page__cta--about">
+				<h2 class="static-page__cta-title serif-title">Join the conversation.</h2>
+				<p class="static-page__cta-copy">
+					Discover the latest stories, follow us on social, or reach out about partnerships and press inquiries.
+				</p>
+				<div class="static-page__cta-actions">
+					<a href="/" class="btn-cta btn-cta--primary">Explore Stories</a>
+					<a href="/advertise/" class="btn-cta btn-cta--primary">Advertise With Us</a>
+				</div>
+			</div>
+		</section>
+
+	</main>
+
+</div>
+===== END =====
+
+
+================================================================================
+FILE: page-advertise.php  →  WordPress Page slug: advertise  (/advertise)
+================================================================================
+===== START =====
+<div class="min-h-screen bg-ivory text-ink">
+
+	<main class="static-page static-page--advertise pb-16">
+
+		<section class="static-page__hero editorial-container">
+			<span class="static-page__badge">
+				<span class="static-page__badge-dot" aria-hidden="true"></span>
+				Media &amp; Partnerships
+			</span>
+			<h1 class="static-page__title serif-title">
+				Advertise With <span class="static-page__title-accent">Us.</span>
+			</h1>
+			<p class="static-page__lead">
+				Interested in advertising with Sassy Strides? Promote your brand through banner ads, product features, and collaborations to reach a wider shopping audience.
+			</p>
+		</section>
+
+		<section class="editorial-container static-page__cards">
+			<article class="static-page__card">
+				<div class="static-page__card-icon" aria-hidden="true">
+					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+						<rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+						<circle cx="9" cy="9" r="2" />
+						<path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+					</svg>
+				</div>
+				<h2 class="static-page__card-title">Banner Ads</h2>
+				<p class="static-page__card-copy">Promote your brand through banner ads with highly visible display placements across our editorial homepage, category pages, and article layouts.</p>
+			</article>
+			<article class="static-page__card">
+				<div class="static-page__card-icon" aria-hidden="true">
+					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+						<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+					</svg>
+				</div>
+				<h2 class="static-page__card-title">Product Features</h2>
+				<p class="static-page__card-copy">Showcase your top products, collections, or exclusive offers directly to a style-forward audience actively exploring fashion and beauty content.</p>
+			</article>
+			<article class="static-page__card">
+				<div class="static-page__card-icon" aria-hidden="true">
+					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+						<circle cx="9" cy="7" r="4" />
+						<path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+						<path d="M16 3.13a4 4 0 0 1 0 7.75" />
+					</svg>
+				</div>
+				<h2 class="static-page__card-title">Collaborations</h2>
+				<p class="static-page__card-copy">Partner with Sassy Strides on sponsored stories, brand integrations, and tailored campaigns designed to reach a wider shopping audience.</p>
+			</article>
+		</section>
+
+		<section class="editorial-container static-page__cta-wrap">
+			<div class="static-page__cta static-page__cta--advertise">
+				<h2 class="static-page__cta-title serif-title">Let&apos;s build a partnership.</h2>
+				<p class="static-page__cta-copy">
+					For inquiries, partnerships, or promotions, please contact our team. We respond to media and advertising requests promptly.
+				</p>
+				<a href="mailto:affiliate@webaffino.com" class="static-page__cta-button">
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<rect width="20" height="16" x="2" y="4" rx="2" />
+						<path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+					</svg>
+					affiliate@webaffino.com
+				</a>
+			</div>
+			<p class="static-page__thanks">
+				Thank you for supporting <strong>Sassy Strides!</strong>
+			</p>
+		</section>
+
+	</main>
+
+</div>
+===== END =====
+
+
+================================================================================
+FILE: page-contact.php  →  WordPress Page slug: contact  (/contact)
+================================================================================
+===== START =====
+<main class="contact-page">
+	<section class="contact-page__shell">
+
+		<div class="contact-page__hero">
+			<p class="contact-page__eyebrow">Get In Touch</p>
+			<h1 class="contact-page__hero-title serif-title">Contact Us</h1>
+			<div class="contact-page__hero-divider" aria-hidden="true"></div>
+		</div>
+
+		<div class="contact-page__grid-wrap">
+			<div class="contact-page__grid">
+
+				<div class="contact-page__form-col">
+					<h2 class="contact-page__section-title serif-title">Say Hello!</h2>
+					<div class="contact-page__details">
+						<p class="contact-page__intro-text">
+							Whether it&apos;s fashion, beauty, lifestyle, partnerships, or editorial inquiries, we&apos;d love to hear from you.
+						</p>
+					</div>
+
+					<div class="contact-page__forminator-wrap">
+						<div class="contact-page__forminator">
+							[forminator_form id="1669"]
+						</div>
+					</div>
+				</div>
+
+				<aside class="contact-page__aside">
+					<figure class="contact-page__figure group">
+						<img
+							src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&amp;fit=crop&amp;w=900&amp;q=80"
+							alt="Editorial lifestyle moment with fashion and coffee"
+							class="contact-page__image"
+							loading="lazy"
+							decoding="async"
+						>
+					</figure>
+					<div class="contact-page__social-block">
+						<p class="contact-page__social-text">Stay connected with us</p>
+						<div class="contact-page__social-icons">
+							<a
+								href="https://www.instagram.com/thesassy_strides/"
+								class="contact-page__social-link"
+								target="_blank"
+								rel="noopener noreferrer"
+								aria-label="Instagram"
+							>
+								<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+									<rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+									<path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+									<line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+								</svg>
+							</a>
+							<a
+								href="https://www.facebook.com/profile.php?id=61590864083802"
+								class="contact-page__social-link"
+								target="_blank"
+								rel="noopener noreferrer"
+								aria-label="Facebook"
+							>
+								<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+									<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+								</svg>
+							</a>
+						</div>
+					</div>
+				</aside>
+
+			</div>
+		</div>
+
+	</section>
+</main>
+===== END =====
+
+
+================================================================================
+FILE: page-faq.php  →  WordPress Page slug: faq  (/faq)
+================================================================================
+===== START =====
+<div class="min-h-screen bg-ivory text-ink">
+
+	<main class="faq-page">
+		<div class="faq-page__shell">
+
+			<nav class="editorial-breadcrumb" aria-label="Breadcrumb">
+				<ol class="editorial-breadcrumb__list">
+					<li class="editorial-breadcrumb__item">
+						<a href="/" class="editorial-breadcrumb__link">Home</a>
+					</li>
+					<li class="editorial-breadcrumb__item">
+						<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="editorial-breadcrumb__separator" aria-hidden="true">
+							<path d="m9 18 6-6-6-6" />
+						</svg>
+						<a href="/faq/" class="editorial-breadcrumb__link">Help Center</a>
+					</li>
+					<li class="editorial-breadcrumb__item">
+						<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="editorial-breadcrumb__separator" aria-hidden="true">
+							<path d="m9 18 6-6-6-6" />
+						</svg>
+						<span class="editorial-breadcrumb__current" aria-current="page">FAQ</span>
+					</li>
+				</ol>
+			</nav>
+
+			<div class="faq-page__hero">
+				<p class="faq-page__eyebrow">Help Center</p>
+				<h1 class="faq-page__title serif-title">Frequently Asked Questions</h1>
+				<p class="faq-page__subtitle">Everything you need to know about Sassy Strides.</p>
+				<div class="faq-page__hero-rule" aria-hidden="true"></div>
+			</div>
+
+			<div class="faq-page__content-wrap">
+				<div class="faq-accordion">
+					<div class="faq-accordion__list">
+
+						<div class="faq-accordion__item">
+							<h3 class="faq-accordion__question-wrap">
+								<button id="general-what-is-sassy-strides-button" type="button" class="faq-accordion__trigger" aria-expanded="false" aria-controls="general-what-is-sassy-strides-panel">
+									<span class="faq-accordion__question">What is Sassy Strides?</span>
+									<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="faq-accordion__icon" aria-hidden="true">
+										<path d="m6 9 6 6 6-6" />
+									</svg>
+								</button>
+							</h3>
+							<div id="general-what-is-sassy-strides-panel" role="region" aria-labelledby="general-what-is-sassy-strides-button" class="faq-accordion__panel">
+								<div class="faq-accordion__answer">
+									<p>Sassy Strides is a luxury digital fashion magazine covering fashion, beauty, lifestyle, trends, and culture. We publish editorial stories, style guides, and cultural commentary designed for readers who appreciate refined aesthetics and thoughtful curation.</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="faq-accordion__item">
+							<h3 class="faq-accordion__question-wrap">
+								<button id="general-content-frequency-button" type="button" class="faq-accordion__trigger" aria-expanded="false" aria-controls="general-content-frequency-panel">
+									<span class="faq-accordion__question">How often is content published?</span>
+									<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="faq-accordion__icon" aria-hidden="true">
+										<path d="m6 9 6 6 6-6" />
+									</svg>
+								</button>
+							</h3>
+							<div id="general-content-frequency-panel" role="region" aria-labelledby="general-content-frequency-button" class="faq-accordion__panel">
+								<div class="faq-accordion__answer">
+									<p>We publish fresh editorial content throughout the week, with new fashion features, beauty edits, and lifestyle stories added regularly. Follow us on social media or subscribe to our newsletter to stay current with the latest from The Edit.</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="faq-accordion__item">
+							<h3 class="faq-accordion__question-wrap">
+								<button id="general-submit-story-ideas-button" type="button" class="faq-accordion__trigger" aria-expanded="false" aria-controls="general-submit-story-ideas-panel">
+									<span class="faq-accordion__question">Can I submit story ideas?</span>
+									<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="faq-accordion__icon" aria-hidden="true">
+										<path d="m6 9 6 6 6-6" />
+									</svg>
+								</button>
+							</h3>
+							<div id="general-submit-story-ideas-panel" role="region" aria-labelledby="general-submit-story-ideas-button" class="faq-accordion__panel">
+								<div class="faq-accordion__answer">
+									<p>Yes. We welcome thoughtful pitches from readers, stylists, and creatives. Visit our Contact page to share your idea with a brief summary, relevant links, and your contact details. While we cannot respond to every submission, our editorial team reviews all inquiries.</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="faq-accordion__item">
+							<h3 class="faq-accordion__question-wrap">
+								<button id="content-find-by-category-button" type="button" class="faq-accordion__trigger" aria-expanded="false" aria-controls="content-find-by-category-panel">
+									<span class="faq-accordion__question">How do I find articles by category?</span>
+									<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="faq-accordion__icon" aria-hidden="true">
+										<path d="m6 9 6 6 6-6" />
+									</svg>
+								</button>
+							</h3>
+							<div id="content-find-by-category-panel" role="region" aria-labelledby="content-find-by-category-button" class="faq-accordion__panel">
+								<div class="faq-accordion__answer">
+									<p>Use the main navigation to explore Fashion, Beauty, Lifestyle, Trends, and News. Each category page features curated stories, subcategory filters, and editorial highlights so you can browse the topics that matter most to you.</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="faq-accordion__item">
+							<h3 class="faq-accordion__question-wrap">
+								<button id="content-sponsored-content-button" type="button" class="faq-accordion__trigger" aria-expanded="false" aria-controls="content-sponsored-content-panel">
+									<span class="faq-accordion__question">Do you publish sponsored content?</span>
+									<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="faq-accordion__icon" aria-hidden="true">
+										<path d="m6 9 6 6 6-6" />
+									</svg>
+								</button>
+							</h3>
+							<div id="content-sponsored-content-panel" role="region" aria-labelledby="content-sponsored-content-button" class="faq-accordion__panel">
+								<div class="faq-accordion__answer">
+									<p>Sassy Strides may feature sponsored stories, brand partnerships, and advertising placements that align with our editorial voice. Sponsored content is created to feel native to our magazine aesthetic and is presented with transparency for our readers.</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="faq-accordion__item">
+							<h3 class="faq-accordion__question-wrap">
+								<button id="partnerships-brand-collaborations-button" type="button" class="faq-accordion__trigger" aria-expanded="false" aria-controls="partnerships-brand-collaborations-panel">
+									<span class="faq-accordion__question">How can brands collaborate with Sassy Strides?</span>
+									<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="faq-accordion__icon" aria-hidden="true">
+										<path d="m6 9 6 6 6-6" />
+									</svg>
+								</button>
+							</h3>
+							<div id="partnerships-brand-collaborations-panel" role="region" aria-labelledby="partnerships-brand-collaborations-button" class="faq-accordion__panel">
+								<div class="faq-accordion__answer">
+									<p>Brands can partner with Sassy Strides through banner advertising, sponsored editorials, product features, and custom campaigns. Visit our Advertise page to learn about media offerings, or contact our team to discuss a tailored collaboration.</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="faq-accordion__item">
+							<h3 class="faq-accordion__question-wrap">
+								<button id="partnerships-contact-editorial-button" type="button" class="faq-accordion__trigger" aria-expanded="false" aria-controls="partnerships-contact-editorial-panel">
+									<span class="faq-accordion__question">How do I contact the editorial team?</span>
+									<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="faq-accordion__icon" aria-hidden="true">
+										<path d="m6 9 6 6 6-6" />
+									</svg>
+								</button>
+							</h3>
+							<div id="partnerships-contact-editorial-panel" role="region" aria-labelledby="partnerships-contact-editorial-button" class="faq-accordion__panel">
+								<div class="faq-accordion__answer">
+									<p>For press inquiries, partnerships, and editorial questions, reach out through our Contact page or email hello@sassystrides.com. Please include your name, organization, and a concise summary of your request so we can respond efficiently.</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="faq-accordion__item">
+							<h3 class="faq-accordion__question-wrap">
+								<button id="newsletter-subscribe-button" type="button" class="faq-accordion__trigger" aria-expanded="false" aria-controls="newsletter-subscribe-panel">
+									<span class="faq-accordion__question">How do I subscribe?</span>
+									<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="faq-accordion__icon" aria-hidden="true">
+										<path d="m6 9 6 6 6-6" />
+									</svg>
+								</button>
+							</h3>
+							<div id="newsletter-subscribe-panel" role="region" aria-labelledby="newsletter-subscribe-button" class="faq-accordion__panel">
+								<div class="faq-accordion__answer">
+									<p>You can subscribe to the Sassy Strides newsletter through sign-up forms across our website, including the homepage and footer. Enter your email address to receive curated style edits, beauty highlights, and exclusive editorial features in your inbox.</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="faq-accordion__item">
+							<h3 class="faq-accordion__question-wrap">
+								<button id="newsletter-unsubscribe-button" type="button" class="faq-accordion__trigger" aria-expanded="false" aria-controls="newsletter-unsubscribe-panel">
+									<span class="faq-accordion__question">Can I unsubscribe anytime?</span>
+									<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="faq-accordion__icon" aria-hidden="true">
+										<path d="m6 9 6 6 6-6" />
+									</svg>
+								</button>
+							</h3>
+							<div id="newsletter-unsubscribe-panel" role="region" aria-labelledby="newsletter-unsubscribe-button" class="faq-accordion__panel">
+								<div class="faq-accordion__answer">
+									<p>Absolutely. Every newsletter includes an unsubscribe link at the bottom of the email. You may also contact hello@sassystrides.com to update your preferences or remove your address from our mailing list at any time.</p>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="faq-page__cta">
+				<p class="faq-page__cta-label">Still have questions?</p>
+				<h2 class="faq-page__cta-title serif-title">We&apos;re here to help.</h2>
+				<p class="faq-page__cta-copy">
+					Reach out to our editorial desk for partnerships, press inquiries, or general correspondence.
+				</p>
+				<a href="/contact/" class="faq-page__cta-button">Contact Us</a>
+			</div>
+
+		</div>
+	</main>
+
+</div>
+===== END =====
+
+
+================================================================================
+FILE: page-privacy-policy.php  →  WordPress Page slug: privacy-policy  (/privacy-policy)
+================================================================================
+===== START =====
+<main class="legal-page">
+	<div class="legal-page__shell">
+
+		<nav class="editorial-breadcrumb" aria-label="Breadcrumb">
+			<ol class="editorial-breadcrumb__list">
+				<li class="editorial-breadcrumb__item">
+					<a href="/" class="editorial-breadcrumb__link">Home</a>
+				</li>
+				<li class="editorial-breadcrumb__item">
+					<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="editorial-breadcrumb__separator" aria-hidden="true">
+						<path d="m9 18 6-6-6-6" />
+					</svg>
+					<a href="/privacy-policy/" class="editorial-breadcrumb__link">Legal</a>
+				</li>
+				<li class="editorial-breadcrumb__item">
+					<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="editorial-breadcrumb__separator" aria-hidden="true">
+						<path d="m9 18 6-6-6-6" />
+					</svg>
+					<span class="editorial-breadcrumb__current" aria-current="page">Privacy Policy</span>
+				</li>
+			</ol>
+		</nav>
+
+		<div class="legal-page__hero">
+			<p class="legal-page__eyebrow">Legal</p>
+			<h1 class="legal-page__title serif-title">Privacy Policy</h1>
+			<p class="legal-page__subtitle">Learn how Sassy Strides collects, uses, and protects your information.</p>
+			<p class="legal-page__updated">
+				Last updated <time datetime="2026-06-22">June 22, 2026</time>
+			</p>
+			<div class="legal-page__hero-rule" aria-hidden="true"></div>
+		</div>
+
+		<div class="legal-page__layout">
+			<div class="legal-page__toc-wrap">
+				<aside class="legal-page__toc" aria-label="Table of contents">
+					<p class="legal-page__toc-label">On this page</p>
+					<nav>
+						<ol class="legal-page__toc-list">
+							<li><a href="#information-we-collect" class="legal-page__toc-link">Information We Collect</a></li>
+							<li><a href="#how-we-use-information" class="legal-page__toc-link">How We Use Information</a></li>
+							<li><a href="#cookies-tracking-technologies" class="legal-page__toc-link">Cookies &amp; Tracking Technologies</a></li>
+							<li><a href="#third-party-services" class="legal-page__toc-link">Third-Party Services</a></li>
+							<li><a href="#data-security" class="legal-page__toc-link">Data Security</a></li>
+							<li><a href="#your-rights" class="legal-page__toc-link">Your Rights</a></li>
+							<li><a href="#contact-information" class="legal-page__toc-link">Contact Information</a></li>
+						</ol>
+					</nav>
+				</aside>
+			</div>
+
+			<div class="legal-page__article-wrap">
+				<article class="legal-page__article">
+
+					<article id="information-we-collect" class="legal-page__section" aria-labelledby="information-we-collect-heading">
+						<div class="legal-page__section-marker" aria-hidden="true">01</div>
+						<h2 id="information-we-collect-heading" class="legal-page__section-title serif-title">Information We Collect</h2>
+						<div class="legal-page__section-body">
+							<p class="legal-page__paragraph">Sassy Strides collects information that helps us deliver a refined editorial experience, respond to inquiries, and understand how readers engage with our fashion, beauty, and lifestyle content.</p>
+							<p class="legal-page__paragraph">The information we collect may include details you voluntarily provide — such as your name, email address, and message content when you contact us, subscribe to our newsletter, or submit a story idea. We may also collect technical data automatically when you visit our website, including your IP address, browser type, device information, referring pages, and general usage patterns.</p>
+							<ul class="legal-page__list">
+								<li>Contact and inquiry details submitted through our forms</li>
+								<li>Newsletter subscription preferences and email address</li>
+								<li>Comments or correspondence sent to our editorial team</li>
+								<li>Analytics data related to page views, clicks, and session duration</li>
+								<li>Cookie and device identifiers used for site functionality and measurement</li>
+							</ul>
+						</div>
+					</article>
+
+					<article id="how-we-use-information" class="legal-page__section" aria-labelledby="how-we-use-information-heading">
+						<div class="legal-page__section-marker" aria-hidden="true">02</div>
+						<h2 id="how-we-use-information-heading" class="legal-page__section-title serif-title">How We Use Information</h2>
+						<div class="legal-page__section-body">
+							<p class="legal-page__paragraph">We use the information we collect to operate Sassy Strides, publish and improve our editorial content, and communicate with readers who choose to hear from us.</p>
+							<p class="legal-page__paragraph">This includes responding to partnership and press inquiries, delivering newsletters you have opted into, personalizing your browsing experience where appropriate, and analyzing audience trends to inform our editorial calendar. We do not sell your personal information to third parties.</p>
+							<ul class="legal-page__list">
+								<li>Providing, maintaining, and improving our website and content</li>
+								<li>Sending editorial updates, newsletters, and service-related notices</li>
+								<li>Processing advertising and collaboration inquiries</li>
+								<li>Monitoring site performance, security, and audience engagement</li>
+								<li>Complying with applicable legal obligations</li>
+							</ul>
+						</div>
+					</article>
+
+					<article id="cookies-tracking-technologies" class="legal-page__section" aria-labelledby="cookies-tracking-technologies-heading">
+						<div class="legal-page__section-marker" aria-hidden="true">03</div>
+						<h2 id="cookies-tracking-technologies-heading" class="legal-page__section-title serif-title">Cookies &amp; Tracking Technologies</h2>
+						<div class="legal-page__section-body">
+							<p class="legal-page__paragraph">Like most modern digital publications, Sassy Strides uses cookies and similar technologies to remember preferences, measure traffic, and support advertising partnerships.</p>
+							<p class="legal-page__paragraph">Cookies are small text files stored on your device. Some are essential for the site to function; others help us understand which stories resonate with our audience or allow advertising partners to deliver relevant placements. You can manage cookie preferences through your browser settings, though disabling certain cookies may affect site functionality.</p>
+							<ul class="legal-page__list">
+								<li>Essential cookies required for core site features</li>
+								<li>Analytics cookies that help us understand readership patterns</li>
+								<li>Advertising cookies used to measure campaign performance</li>
+								<li>Preference cookies that remember settings during your visit</li>
+							</ul>
+						</div>
+					</article>
+
+					<article id="third-party-services" class="legal-page__section" aria-labelledby="third-party-services-heading">
+						<div class="legal-page__section-marker" aria-hidden="true">04</div>
+						<h2 id="third-party-services-heading" class="legal-page__section-title serif-title">Third-Party Services</h2>
+						<div class="legal-page__section-body">
+							<p class="legal-page__paragraph">Sassy Strides may integrate trusted third-party services for analytics, advertising, email delivery, social media embeds, and content hosting. These providers may process limited information on our behalf in accordance with their own privacy policies.</p>
+							<p class="legal-page__paragraph">When you interact with embedded content — such as social media widgets, sponsored placements, or external links — those third parties may collect information directly from you. We encourage you to review the privacy practices of any external service you choose to engage with.</p>
+							<ul class="legal-page__list">
+								<li>Website analytics and performance tools</li>
+								<li>Email marketing and newsletter platforms</li>
+								<li>Advertising networks and sponsorship partners</li>
+								<li>Social media platforms linked from our site</li>
+								<li>Content delivery and security infrastructure providers</li>
+							</ul>
+						</div>
+					</article>
+
+					<article id="data-security" class="legal-page__section" aria-labelledby="data-security-heading">
+						<div class="legal-page__section-marker" aria-hidden="true">05</div>
+						<h2 id="data-security-heading" class="legal-page__section-title serif-title">Data Security</h2>
+						<div class="legal-page__section-body">
+							<p class="legal-page__paragraph">We take reasonable administrative, technical, and organizational measures to protect the information we collect against unauthorized access, alteration, disclosure, or destruction.</p>
+							<p class="legal-page__paragraph">While no online platform can guarantee absolute security, we regularly review our practices and work with reputable service providers to safeguard reader data. If you believe your information has been compromised, please contact us promptly using the details below.</p>
+						</div>
+					</article>
+
+					<article id="your-rights" class="legal-page__section" aria-labelledby="your-rights-heading">
+						<div class="legal-page__section-marker" aria-hidden="true">06</div>
+						<h2 id="your-rights-heading" class="legal-page__section-title serif-title">Your Rights</h2>
+						<div class="legal-page__section-body">
+							<p class="legal-page__paragraph">Depending on your location, you may have rights regarding your personal information, including the ability to access, correct, delete, or restrict certain processing of your data.</p>
+							<p class="legal-page__paragraph">You may unsubscribe from marketing emails at any time using the link included in our newsletters. You may also request information about the data we hold or ask us to update inaccurate details by contacting our team. We will respond to legitimate requests in accordance with applicable law.</p>
+							<ul class="legal-page__list">
+								<li>Request access to personal information we maintain about you</li>
+								<li>Ask us to correct or update inaccurate information</li>
+								<li>Request deletion of certain personal data, where applicable</li>
+								<li>Opt out of marketing communications at any time</li>
+								<li>Object to or restrict specific types of data processing</li>
+							</ul>
+						</div>
+					</article>
+
+					<article id="contact-information" class="legal-page__section" aria-labelledby="contact-information-heading">
+						<div class="legal-page__section-marker" aria-hidden="true">07</div>
+						<h2 id="contact-information-heading" class="legal-page__section-title serif-title">Contact Information</h2>
+						<div class="legal-page__section-body">
+							<p class="legal-page__paragraph">If you have questions about this Privacy Policy or how Sassy Strides handles your information, please reach out to our editorial team. We are happy to assist with privacy-related requests, newsletter preferences, and general inquiries.</p>
+							<p class="legal-page__paragraph">Email: hello@sassystrides.com</p>
+							<p class="legal-page__paragraph">You may also visit our Contact page for partnership, press, and editorial correspondence.</p>
+						</div>
+					</article>
+
+				</article>
+			</div>
+		</div>
+	</div>
+</main>
+===== END =====
+
+
+================================================================================
+FILE: page-terms-of-service.php  →  WordPress Page slug: terms-of-service  (/terms-of-service)
+================================================================================
+===== START =====
+<main class="legal-page">
+	<div class="legal-page__shell">
+
+		<nav class="editorial-breadcrumb" aria-label="Breadcrumb">
+			<ol class="editorial-breadcrumb__list">
+				<li class="editorial-breadcrumb__item">
+					<a href="/" class="editorial-breadcrumb__link">Home</a>
+				</li>
+				<li class="editorial-breadcrumb__item">
+					<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="editorial-breadcrumb__separator" aria-hidden="true">
+						<path d="m9 18 6-6-6-6" />
+					</svg>
+					<a href="/terms-of-service/" class="editorial-breadcrumb__link">Legal</a>
+				</li>
+				<li class="editorial-breadcrumb__item">
+					<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="editorial-breadcrumb__separator" aria-hidden="true">
+						<path d="m9 18 6-6-6-6" />
+					</svg>
+					<span class="editorial-breadcrumb__current" aria-current="page">Terms of Service</span>
+				</li>
+			</ol>
+		</nav>
+
+		<div class="legal-page__hero">
+			<p class="legal-page__eyebrow">Legal</p>
+			<h1 class="legal-page__title serif-title">Terms of Service</h1>
+			<p class="legal-page__subtitle">Guidelines for using Sassy Strides and its content.</p>
+			<p class="legal-page__updated">
+				Last updated <time datetime="2026-06-22">June 22, 2026</time>
+			</p>
+			<div class="legal-page__hero-rule" aria-hidden="true"></div>
+		</div>
+
+		<div class="legal-page__layout">
+			<div class="legal-page__toc-wrap">
+				<aside class="legal-page__toc" aria-label="Table of contents">
+					<p class="legal-page__toc-label">On this page</p>
+					<nav>
+						<ol class="legal-page__toc-list">
+							<li><a href="#acceptance-of-terms" class="legal-page__toc-link">Acceptance of Terms</a></li>
+							<li><a href="#use-of-website" class="legal-page__toc-link">Use of Website</a></li>
+							<li><a href="#intellectual-property" class="legal-page__toc-link">Intellectual Property</a></li>
+							<li><a href="#user-responsibilities" class="legal-page__toc-link">User Responsibilities</a></li>
+							<li><a href="#third-party-links" class="legal-page__toc-link">Third-Party Links</a></li>
+							<li><a href="#limitation-of-liability" class="legal-page__toc-link">Limitation of Liability</a></li>
+							<li><a href="#changes-to-terms" class="legal-page__toc-link">Changes to Terms</a></li>
+							<li><a href="#contact-information" class="legal-page__toc-link">Contact Information</a></li>
+						</ol>
+					</nav>
+				</aside>
+			</div>
+
+			<div class="legal-page__article-wrap">
+				<article class="legal-page__article">
+
+					<article id="acceptance-of-terms" class="legal-page__section" aria-labelledby="acceptance-of-terms-heading">
+						<div class="legal-page__section-marker" aria-hidden="true">01</div>
+						<h2 id="acceptance-of-terms-heading" class="legal-page__section-title serif-title">Acceptance of Terms</h2>
+						<div class="legal-page__section-body">
+							<p class="legal-page__paragraph">By accessing or using the Sassy Strides website, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any part of these terms, please discontinue use of our site.</p>
+							<p class="legal-page__paragraph">These terms apply to all visitors, readers, contributors, and partners who interact with Sassy Strides content, features, newsletters, and related digital services.</p>
+						</div>
+					</article>
+
+					<article id="use-of-website" class="legal-page__section" aria-labelledby="use-of-website-heading">
+						<div class="legal-page__section-marker" aria-hidden="true">02</div>
+						<h2 id="use-of-website-heading" class="legal-page__section-title serif-title">Use of Website</h2>
+						<div class="legal-page__section-body">
+							<p class="legal-page__paragraph">Sassy Strides grants you a limited, non-exclusive, non-transferable license to access and use our website for personal, non-commercial purposes. You may read, share links to, and enjoy our editorial content in accordance with these terms.</p>
+							<p class="legal-page__paragraph">You agree not to misuse the site, interfere with its operation, attempt unauthorized access to our systems, scrape content at scale, or use automated tools in a manner that disrupts the experience for other readers.</p>
+							<ul class="legal-page__list">
+								<li>Do not copy, republish, or redistribute content without permission</li>
+								<li>Do not upload malicious code or attempt to breach site security</li>
+								<li>Do not impersonate Sassy Strides staff or misrepresent affiliations</li>
+								<li>Do not use the site for unlawful, harassing, or deceptive activity</li>
+							</ul>
+						</div>
+					</article>
+
+					<article id="intellectual-property" class="legal-page__section" aria-labelledby="intellectual-property-heading">
+						<div class="legal-page__section-marker" aria-hidden="true">03</div>
+						<h2 id="intellectual-property-heading" class="legal-page__section-title serif-title">Intellectual Property</h2>
+						<div class="legal-page__section-body">
+							<p class="legal-page__paragraph">All content published on Sassy Strides — including articles, photography, graphics, logos, layouts, headlines, and editorial branding — is owned by Sassy Strides or its licensors and is protected by copyright, trademark, and other intellectual property laws.</p>
+							<p class="legal-page__paragraph">You may share links to our stories on social media and quote brief excerpts with proper attribution and a link back to the original article. Any other reproduction, distribution, or commercial use requires prior written permission from Sassy Strides.</p>
+						</div>
+					</article>
+
+					<article id="user-responsibilities" class="legal-page__section" aria-labelledby="user-responsibilities-heading">
+						<div class="legal-page__section-marker" aria-hidden="true">04</div>
+						<h2 id="user-responsibilities-heading" class="legal-page__section-title serif-title">User Responsibilities</h2>
+						<div class="legal-page__section-body">
+							<p class="legal-page__paragraph">When you contact us, subscribe to communications, or submit ideas and feedback, you are responsible for providing accurate information and ensuring that your submissions do not violate the rights of others.</p>
+							<p class="legal-page__paragraph">You agree not to submit unlawful, defamatory, infringing, or otherwise objectionable material. Sassy Strides reserves the right to remove or disregard submissions that do not align with our editorial standards or legal obligations.</p>
+						</div>
+					</article>
+
+					<article id="third-party-links" class="legal-page__section" aria-labelledby="third-party-links-heading">
+						<div class="legal-page__section-marker" aria-hidden="true">05</div>
+						<h2 id="third-party-links-heading" class="legal-page__section-title serif-title">Third-Party Links</h2>
+						<div class="legal-page__section-body">
+							<p class="legal-page__paragraph">Our website may include links to third-party websites, brands, retailers, and social platforms for reader convenience and editorial context. Sassy Strides does not control and is not responsible for the content, policies, or practices of those external sites.</p>
+							<p class="legal-page__paragraph">Accessing third-party links is at your own discretion. We encourage you to review the terms and privacy policies of any external website you visit from Sassy Strides.</p>
+						</div>
+					</article>
+
+					<article id="limitation-of-liability" class="legal-page__section" aria-labelledby="limitation-of-liability-heading">
+						<div class="legal-page__section-marker" aria-hidden="true">06</div>
+						<h2 id="limitation-of-liability-heading" class="legal-page__section-title serif-title">Limitation of Liability</h2>
+						<div class="legal-page__section-body">
+							<p class="legal-page__paragraph">Sassy Strides provides editorial content for informational and inspirational purposes. While we strive for accuracy and quality, we do not warrant that the site will be uninterrupted, error-free, or complete at all times.</p>
+							<p class="legal-page__paragraph">To the fullest extent permitted by law, Sassy Strides and its team shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the website, reliance on editorial content, or interactions with third-party services linked from our platform.</p>
+						</div>
+					</article>
+
+					<article id="changes-to-terms" class="legal-page__section" aria-labelledby="changes-to-terms-heading">
+						<div class="legal-page__section-marker" aria-hidden="true">07</div>
+						<h2 id="changes-to-terms-heading" class="legal-page__section-title serif-title">Changes to Terms</h2>
+						<div class="legal-page__section-body">
+							<p class="legal-page__paragraph">We may update these Terms of Service from time to time to reflect changes in our services, legal requirements, or editorial operations. When we make material updates, we will revise the &ldquo;Last updated&rdquo; date at the top of this page.</p>
+							<p class="legal-page__paragraph">Your continued use of Sassy Strides after changes are posted constitutes acceptance of the revised terms. We recommend reviewing this page periodically to stay informed.</p>
+						</div>
+					</article>
+
+					<article id="contact-information" class="legal-page__section" aria-labelledby="contact-information-heading">
+						<div class="legal-page__section-marker" aria-hidden="true">08</div>
+						<h2 id="contact-information-heading" class="legal-page__section-title serif-title">Contact Information</h2>
+						<div class="legal-page__section-body">
+							<p class="legal-page__paragraph">For questions about these Terms of Service, permissions requests, or legal inquiries, please contact Sassy Strides using the information below.</p>
+							<p class="legal-page__paragraph">Email: hello@sassystrides.com</p>
+							<p class="legal-page__paragraph">Visit our Contact page for editorial, partnership, and advertising correspondence.</p>
+						</div>
+					</article>
+
+				</article>
+			</div>
+		</div>
+	</div>
+</main>
+===== END =====
