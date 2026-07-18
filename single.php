@@ -2,6 +2,8 @@
 /**
  * Single post template. Merges BlogDetails.jsx (outer layout) and
  * ArticleContentWithAds.jsx (in-article ad injection).
+ * Dynamic ad lookup is title-based so the template no longer depends on
+ * Advanced Ads placement IDs.
  *
  * Note: the SPA's ArticleSkeleton / isError / "Article not found" branches
  * have no WordPress equivalent here — a nonexistent slug never reaches
@@ -49,7 +51,6 @@ while ( have_posts() ) :
 	// Article body ad injection (ArticleContentWithAds.jsx).
 	$sassystrides_article_html   = sassystrides_normalize_article_html( get_the_content() );
 	$sassystrides_article_blocks = sassystrides_split_article_blocks( $sassystrides_article_html );
-	$sassystrides_article_ads    = sassystrides_get_article_ad_placements( count( $sassystrides_article_blocks ) );
 	?>
 
 	<div class="min-h-screen bg-ivory text-ink<?php echo $sassystrides_is_rss_feed_article ? ' blog-detail--rss-feed' : ''; ?>">
@@ -60,14 +61,7 @@ while ( have_posts() ) :
 				<section class="editorial-ad editorial-ad--inline editorial-container" aria-label="<?php esc_attr_e( 'Sponsored placement', 'sassy-strides' ); ?>">
 					<aside class="ad-banner ad-banner--horizontal" aria-label="<?php esc_attr_e( 'Advertisement', 'sassy-strides' ); ?>">
 						<div class="ad-banner__frame">
-							<?php
-							$sassystrides_top_ad_id = sassystrides_get_ad_id( 'category', 5 );
-							if ( function_exists( 'the_ad' ) && $sassystrides_top_ad_id ) {
-								the_ad( $sassystrides_top_ad_id );
-							} else {
-								echo '<!-- Advanced Ads placeholder: category slot 5 (ad ID 1609) -->';
-							}
-							?>
+							<?php render_dynamic_ad( 'post-top' ); ?>
 						</div>
 					</aside>
 				</section>
@@ -165,15 +159,20 @@ while ( have_posts() ) :
 							<div class="article-content">
 								<?php foreach ( $sassystrides_article_blocks as $sassystrides_block_index => $sassystrides_block_html ) : ?>
 									<div class="article-content__block"><?php echo $sassystrides_block_html; ?></div>
-									<?php if ( isset( $sassystrides_article_ads[ $sassystrides_block_index ] ) ) : ?>
+									<?php if ( 0 === $sassystrides_block_index && count( $sassystrides_article_blocks ) > 1 ) : ?>
 										<section class="editorial-ad editorial-ad--inline editorial-container" aria-label="<?php esc_attr_e( 'Sponsored placement', 'sassy-strides' ); ?>">
-											<aside class="ad-banner ad-banner--horizontal" data-ad-id="<?php echo esc_attr( $sassystrides_article_ads[ $sassystrides_block_index ] ); ?>" aria-label="<?php esc_attr_e( 'Advertisement', 'sassy-strides' ); ?>">
+											<aside class="ad-banner ad-banner--horizontal" aria-label="<?php esc_attr_e( 'Advertisement', 'sassy-strides' ); ?>">
 												<div class="ad-banner__frame">
-													<?php if ( function_exists( 'the_ad' ) ) : ?>
-														<?php the_ad( $sassystrides_article_ads[ $sassystrides_block_index ] ); ?>
-													<?php else : ?>
-														<!-- Advanced Ads placeholder: article ad ID <?php echo esc_html( $sassystrides_article_ads[ $sassystrides_block_index ] ); ?> -->
-													<?php endif; ?>
+													<?php render_dynamic_ad( 'post-middle' ); ?>
+												</div>
+											</aside>
+										</section>
+									<?php endif; ?>
+									<?php if ( 3 === $sassystrides_block_index && count( $sassystrides_article_blocks ) > 4 ) : ?>
+										<section class="editorial-ad editorial-ad--inline editorial-container" aria-label="<?php esc_attr_e( 'Sponsored placement', 'sassy-strides' ); ?>">
+											<aside class="ad-banner ad-banner--horizontal" aria-label="<?php esc_attr_e( 'Advertisement', 'sassy-strides' ); ?>">
+												<div class="ad-banner__frame">
+													<?php render_dynamic_ad( 'post-bottom' ); ?>
 												</div>
 											</aside>
 										</section>
@@ -200,14 +199,7 @@ while ( have_posts() ) :
 
 					<!-- AdSlot page="category" slot={2} variant="category-medium" -->
 					<div class="featured-page-ad featured-page-ad--medium">
-						<?php
-						$sassystrides_sidebar_ad_id = sassystrides_get_ad_id( 'category', 2 );
-						if ( function_exists( 'the_ad' ) && $sassystrides_sidebar_ad_id ) {
-							the_ad( $sassystrides_sidebar_ad_id );
-						} else {
-							echo '<!-- Advanced Ads placeholder: category slot 2 (ad ID 1602) -->';
-						}
-						?>
+						<?php render_dynamic_ad( 'post-bottom' ); ?>
 					</div>
 
 					<!-- TrendingWidget posts={relatedPosts} -->

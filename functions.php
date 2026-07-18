@@ -103,41 +103,6 @@ function sassystrides_get_category_url( $slug ) {
  * to exist in wp-admin.
  */
 function sassystrides_get_subcategories() {
-	return array(
-		array( 'parent_slug' => 'fashion', 'slug' => 'clothing', 'name' => __( 'Clothing', 'sassy-strides' ), 'description' => __( 'Discover modern clothing styles, outfit ideas, and wardrobe essentials for every season.', 'sassy-strides' ), 'keywords' => array( 'clothing', 'outfit', 'wardrobe', 'apparel', 'dress', 'wear' ) ),
-		array( 'parent_slug' => 'fashion', 'slug' => 'fashion-week', 'name' => __( 'Fashion Week', 'sassy-strides' ), 'description' => __( 'Get runway highlights, designer collections, and global Fashion Week updates.', 'sassy-strides' ), 'keywords' => array( 'fashion week', 'runway', 'designer', 'collection', 'catwalk' ) ),
-		array( 'parent_slug' => 'fashion', 'slug' => 'look-of-the-day', 'name' => __( 'Look of the Day', 'sassy-strides' ), 'description' => __( 'Daily fashion inspiration featuring stylish celebrity and influencer outfits.', 'sassy-strides' ), 'keywords' => array( 'look of the day', 'celebrity', 'influencer', 'outfit', 'style' ) ),
-		array( 'parent_slug' => 'fashion', 'slug' => 'accessories', 'name' => __( 'Accessories', 'sassy-strides' ), 'description' => __( 'Explore trending bags, jewelry, belts, and fashion accessories to elevate your look.', 'sassy-strides' ), 'keywords' => array( 'accessories', 'bags', 'jewelry', 'belts', 'handbag' ) ),
-		array( 'parent_slug' => 'fashion', 'slug' => 'shoes', 'name' => __( 'Shoes', 'sassy-strides' ), 'description' => __( 'Find the latest footwear trends, from sneakers to heels and everyday comfort styles.', 'sassy-strides' ), 'keywords' => array( 'shoes', 'footwear', 'sneakers', 'heels', 'boots' ) ),
-		array( 'parent_slug' => 'beauty', 'slug' => 'hair', 'name' => __( 'Hair', 'sassy-strides' ), 'description' => __( 'Haircare tips, hairstyles, and trending hair transformations for every type.', 'sassy-strides' ), 'keywords' => array( 'hair', 'haircare', 'hairstyle', 'salon' ) ),
-		array( 'parent_slug' => 'beauty', 'slug' => 'skin', 'name' => __( 'Skin', 'sassy-strides' ), 'description' => __( 'Skincare routines, product guides, and healthy glowing skin solutions.', 'sassy-strides' ), 'keywords' => array( 'skin', 'skincare', 'glow', 'serum', 'moisturizer' ) ),
-		array( 'parent_slug' => 'beauty', 'slug' => 'makeup', 'name' => __( 'Makeup', 'sassy-strides' ), 'description' => __( 'Latest makeup trends, tutorials, and product recommendations for all looks.', 'sassy-strides' ), 'keywords' => array( 'makeup', 'cosmetics', 'lipstick', 'foundation', 'beauty' ) ),
-		array( 'parent_slug' => 'beauty', 'slug' => 'nails', 'name' => __( 'Nails', 'sassy-strides' ), 'description' => __( 'Nail art ideas, manicure trends, and seasonal nail inspiration.', 'sassy-strides' ), 'keywords' => array( 'nails', 'manicure', 'nail art', 'polish' ) ),
-		array( 'parent_slug' => 'beauty', 'slug' => 'fragrance', 'name' => __( 'Fragrance', 'sassy-strides' ), 'description' => __( 'Explore perfumes, scent trends, and fragrance guides for every mood.', 'sassy-strides' ), 'keywords' => array( 'fragrance', 'perfume', 'scent', 'cologne' ) ),
-		array( 'parent_slug' => 'lifestyle', 'slug' => 'airport-style', 'name' => __( 'Airport Style', 'sassy-strides' ), 'description' => __( 'Comfortable yet stylish travel outfit ideas for airport looks.', 'sassy-strides' ), 'keywords' => array( 'airport', 'travel', 'flight', 'luggage' ) ),
-		array( 'parent_slug' => 'lifestyle', 'slug' => 'office', 'name' => __( 'Office', 'sassy-strides' ), 'description' => __( 'Professional and trendy workwear inspiration for modern office fashion.', 'sassy-strides' ), 'keywords' => array( 'office', 'workwear', 'professional', 'workplace', 'corporate' ) ),
-		array( 'parent_slug' => 'lifestyle', 'slug' => 'street-style', 'name' => __( 'Street Style', 'sassy-strides' ), 'description' => __( 'Real-world fashion inspiration from global street style trends.', 'sassy-strides' ), 'keywords' => array( 'street style', 'streetwear', 'urban' ) ),
-		array( 'parent_slug' => 'lifestyle', 'slug' => 'holiday', 'name' => __( 'Holiday', 'sassy-strides' ), 'description' => __( 'Vacation outfit ideas and travel fashion inspiration for every destination.', 'sassy-strides' ), 'keywords' => array( 'holiday', 'vacation', 'resort', 'getaway', 'travel' ) ),
-		array( 'parent_slug' => 'lifestyle', 'slug' => 'party', 'name' => __( 'Party', 'sassy-strides' ), 'description' => __( 'Glamorous party looks and styling ideas for special occasions.', 'sassy-strides' ), 'keywords' => array( 'party', 'evening', 'celebration', 'gala', 'occasion' ) ),
-		array( 'parent_slug' => 'trends', 'slug' => 'spring', 'name' => __( 'Spring', 'sassy-strides' ), 'description' => __( 'Fresh spring fashion, colors, and style inspiration.', 'sassy-strides' ), 'keywords' => array( 'spring', 'seasonal' ) ),
-		array( 'parent_slug' => 'trends', 'slug' => 'summer', 'name' => __( 'Summer', 'sassy-strides' ), 'description' => __( 'Lightweight, trendy summer outfits and seasonal beauty looks.', 'sassy-strides' ), 'keywords' => array( 'summer', 'seasonal' ) ),
-		array( 'parent_slug' => 'trends', 'slug' => 'autumn', 'name' => __( 'Autumn', 'sassy-strides' ), 'description' => __( 'Warm, stylish autumn fashion and cozy seasonal trends.', 'sassy-strides' ), 'keywords' => array( 'autumn', 'fall', 'seasonal' ) ),
-		array( 'parent_slug' => 'trends', 'slug' => 'winter', 'name' => __( 'Winter', 'sassy-strides' ), 'description' => __( 'Elegant winter outfits, layering ideas, and cold-weather style tips.', 'sassy-strides' ), 'keywords' => array( 'winter', 'layering', 'seasonal' ) ),
-		array( 'parent_slug' => 'news', 'slug' => 'awards-events', 'name' => __( 'Awards & Events', 'sassy-strides' ), 'description' => __( 'Coverage of fashion awards, red carpet events, and industry shows.', 'sassy-strides' ), 'keywords' => array( 'awards', 'events', 'red carpet', 'gala', 'ceremony' ) ),
-		array( 'parent_slug' => 'news', 'slug' => 'entertainment', 'name' => __( 'Entertainment', 'sassy-strides' ), 'description' => __( 'Celebrity news, lifestyle updates, and pop culture stories.', 'sassy-strides' ), 'keywords' => array( 'entertainment', 'celebrity', 'pop culture' ) ),
-	);
-}
-
-function sassystrides_get_subcategories_by_parent( $parent_slug ) {
-	return array_values(
-		array_filter(
-			sassystrides_get_subcategories(),
-			function ( $sassystrides_sub ) use ( $parent_slug ) {
-				return $sassystrides_sub['parent_slug'] === $parent_slug;
-			}
-		)
-	);
-}
 
 function sassystrides_get_subcategory( $parent_slug, $sub_slug ) {
 	foreach ( sassystrides_get_subcategories() as $sassystrides_sub ) {
@@ -156,41 +121,6 @@ function sassystrides_get_subcategory( $parent_slug, $sub_slug ) {
  */
 function sassystrides_post_matches_keywords( $post_id, array $keywords ) {
 	if ( empty( $keywords ) ) {
-		return false;
-	}
-
-	$sassystrides_haystack_parts = array(
-		get_the_title( $post_id ),
-		get_the_excerpt( $post_id ),
-		wp_strip_all_tags( (string) get_post_field( 'post_content', $post_id ) ),
-	);
-
-	foreach ( get_the_category( $post_id ) as $sassystrides_term ) {
-		$sassystrides_haystack_parts[] = $sassystrides_term->name;
-	}
-
-	$sassystrides_post_tags = get_the_tags( $post_id );
-	if ( $sassystrides_post_tags ) {
-		foreach ( $sassystrides_post_tags as $sassystrides_tag ) {
-			$sassystrides_haystack_parts[] = $sassystrides_tag->name;
-		}
-	}
-
-	$sassystrides_haystack = strtolower( wp_strip_all_tags( implode( ' ', $sassystrides_haystack_parts ) ) );
-
-	foreach ( $keywords as $sassystrides_keyword ) {
-		if ( '' !== $sassystrides_keyword && false !== strpos( $sassystrides_haystack, strtolower( $sassystrides_keyword ) ) ) {
-			return true;
-		}
-	}
-
-	return false;
-}
-
-/**
- * Registers /{parent}/{subcategory}/ rewrite rules for the virtual
- * subcategories above (e.g. /lifestyle/street-style/), routing them to
- * category-subcategory.php via the template_include filter below instead
  * of 404ing. Each parent's subcategory slugs are matched by exact
  * alternation (not a wildcard) so this can't accidentally swallow a real
  * post permalink that happens to share the /parent/something/ shape.
@@ -266,41 +196,6 @@ add_action( 'init', 'sassystrides_register_subcategory_rewrites' );
 
 function sassystrides_subcategory_query_vars( $vars ) {
 	$vars[] = 'sassystrides_subcategory';
-	return $vars;
-}
-add_filter( 'query_vars', 'sassystrides_subcategory_query_vars' );
-
-function sassystrides_subcategory_template( $template ) {
-	if ( get_query_var( 'sassystrides_subcategory' ) ) {
-		$sassystrides_custom_template = locate_template( 'category-subcategory.php' );
-
-		if ( $sassystrides_custom_template ) {
-			return $sassystrides_custom_template;
-		}
-	}
-
-	return $template;
-}
-add_filter( 'template_include', 'sassystrides_subcategory_template' );
-
-/**
- * Post permalinks: /{category}/{subcategory}/{postname}/, ported from
- * utils/postRoutes.js's getPostPath() so links generated here match the
- * original SPA's URLs exactly (e.g. /fashion/clothing/my-post-slug). The
- * category/subcategory segments are cosmetic — like the SPA's router,
- * incoming requests are resolved purely by the trailing postname segment
- * (see sassystrides_register_post_permalink_rewrites() below), so a post
- * always resolves correctly even if its resolved category/subcategory
- * ever drifts from what's baked into an already-shared link.
- */
-function sassystrides_slugify( $value ) {
-	$value = strtolower( trim( (string) $value ) );
-	$value = str_replace( '&', 'and', $value );
-	$value = preg_replace( '/[^a-z0-9]+/', '-', $value );
-	return trim( $value, '-' );
-}
-
-function sassystrides_to_plain_text( $value ) {
 	$value = (string) $value;
 	$value = preg_replace( '/<[^>]+>/', ' ', $value );
 	$value = str_replace( '&nbsp;', ' ', $value );
@@ -472,7 +367,7 @@ function sassystrides_get_social_links() {
 }
 
 /**
- * Advanced Ads placement ID lookup. Mirrors constants/adSlotMappings.js
+ * Homepage-only Advanced Ads ID lookup. Mirrors constants/adSlotMappings.js
  * so `the_ad( sassystrides_get_ad_id( 'homepage', 1 ) )` resolves to the
  * same placement the React <AdSlot page="homepage" slot={1} /> used.
  */
@@ -511,9 +406,221 @@ function sassystrides_get_ad_id( $page, $slot ) {
 }
 
 /**
- * Whether a top-level category slug gets the extra Advanced Ads placements
- * (billboard, mid-inline, sidebar). Mirrors constants/featuredPageAds.js's
- * FEATURED_PAGE_SLUGS.
+ * Dynamic Advanced Ads title lookup used by category and single templates.
+ * The title format is `Parent - Child - Placement`, where the placement is
+ * resolved from a placement slug like `cat-top-banner` or `post-middle`.
+ */
+function sassystrides_get_dynamic_ad_placement_names() {
+	return array(
+		'cat-top-banner' => 'Top Banner',
+		'cat-sidebar-1'  => 'Sidebar 1',
+		'cat-sidebar-2'  => 'Sidebar 2',
+		'cat-sidebar-3'  => 'Sidebar 3',
+		'cat-in-feed-1'  => 'In Feed 1',
+		'cat-in-feed-2'  => 'In Feed 2',
+		'cat-bottom-1'   => 'Bottom 1',
+		'cat-bottom-2'   => 'Bottom 2',
+		'cat-bottom-3'   => 'Bottom 3',
+		'post-top'       => 'Post Top',
+		'post-middle'    => 'Post Middle',
+		'post-bottom'    => 'Post Bottom',
+	);
+}
+
+function sassystrides_get_dynamic_ad_title_map() {
+	static $title_map = null;
+
+	if ( null !== $title_map ) {
+		return $title_map;
+	}
+
+	$cache_key  = 'sassystrides_dynamic_ad_title_map';
+	$cached_map = wp_cache_get( $cache_key, 'sassystrides' );
+
+	if ( false !== $cached_map && is_array( $cached_map ) ) {
+		$title_map = $cached_map;
+		return $title_map;
+	}
+
+	$title_map = array();
+	$ad_posts  = get_posts(
+		array(
+			'post_type'              => 'advanced_ads',
+			'post_status'            => 'publish',
+			'posts_per_page'         => -1,
+			'orderby'                => 'title',
+			'order'                  => 'ASC',
+			'no_found_rows'          => true,
+			'suppress_filters'       => true,
+			'ignore_sticky_posts'    => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+		)
+	);
+
+	foreach ( $ad_posts as $ad_post ) {
+		if ( ! ( $ad_post instanceof WP_Post ) ) {
+			continue;
+		}
+
+		$ad_title = trim( wp_strip_all_tags( $ad_post->post_title ) );
+		if ( '' === $ad_title || isset( $title_map[ $ad_title ] ) ) {
+			continue;
+		}
+
+		$title_map[ $ad_title ] = (int) $ad_post->ID;
+	}
+
+	wp_cache_set( $cache_key, $title_map, 'sassystrides' );
+
+	return $title_map;
+}
+
+function sassystrides_find_dynamic_ad_id( $ad_title ) {
+	$ad_title = trim( wp_strip_all_tags( (string) $ad_title ) );
+	if ( '' === $ad_title ) {
+		return 0;
+	}
+
+	static $lookup_cache = array();
+
+	if ( array_key_exists( $ad_title, $lookup_cache ) ) {
+		return $lookup_cache[ $ad_title ];
+	}
+
+	$title_map = sassystrides_get_dynamic_ad_title_map();
+	$ad_id     = isset( $title_map[ $ad_title ] ) ? (int) $title_map[ $ad_title ] : 0;
+
+	$lookup_cache[ $ad_title ] = $ad_id;
+
+	return $ad_id;
+}
+
+function sassystrides_get_category_ad_context() {
+	$parent_slug = get_query_var( 'category_name' );
+	$child_slug  = get_query_var( 'sassystrides_subcategory' );
+
+	if ( $parent_slug && $child_slug ) {
+		$parent_term = get_term_by( 'slug', $parent_slug, 'category' );
+		$child_term  = sassystrides_get_subcategory( $parent_slug, $child_slug );
+
+		if ( $parent_term && ! is_wp_error( $parent_term ) && $child_term ) {
+			return array(
+				'parent_label' => $parent_term->name,
+				'child_label'  => $child_term['name'],
+			);
+		}
+	}
+
+	$current_term = get_queried_object();
+	if ( ! ( $current_term instanceof WP_Term ) || 'category' !== $current_term->taxonomy ) {
+		return null;
+	}
+
+	if ( $current_term->parent ) {
+		$parent_term = get_term( $current_term->parent, 'category' );
+
+		if ( ! $parent_term || is_wp_error( $parent_term ) ) {
+			return null;
+		}
+
+		return array(
+			'parent_label' => $parent_term->name,
+			'child_label'  => $current_term->name,
+		);
+	}
+
+	return array(
+		'parent_label' => $current_term->name,
+		'child_label'  => 'All ' . $current_term->name,
+	);
+}
+
+function sassystrides_get_post_ad_context() {
+	$post_id = get_queried_object_id();
+	if ( ! $post_id ) {
+		return null;
+	}
+
+	$categories = get_the_category( $post_id );
+	if ( empty( $categories ) || is_wp_error( $categories ) ) {
+		return null;
+	}
+
+	$top_level_category = null;
+
+	foreach ( $categories as $category ) {
+		if ( ! ( $category instanceof WP_Term ) ) {
+			continue;
+		}
+
+		if ( $category->parent ) {
+			$parent_term = get_term( $category->parent, 'category' );
+
+			if ( $parent_term && ! is_wp_error( $parent_term ) ) {
+				return array(
+					'parent_label' => $parent_term->name,
+					'child_label'  => $category->name,
+				);
+			}
+		}
+
+		if ( in_array( $category->slug, sassystrides_get_featured_category_slugs(), true ) && ! $top_level_category ) {
+			$top_level_category = $category;
+		}
+	}
+
+	if ( ! $top_level_category ) {
+		$top_level_category = $categories[0];
+	}
+
+	if ( ! ( $top_level_category instanceof WP_Term ) ) {
+		return null;
+	}
+
+	return array(
+		'parent_label' => $top_level_category->name,
+		'child_label'  => 'All ' . $top_level_category->name,
+	);
+}
+
+function sassystrides_get_dynamic_ad_context( $placement_slug ) {
+	if ( 0 === strpos( $placement_slug, 'post-' ) ) {
+		return sassystrides_get_post_ad_context();
+	}
+
+	return sassystrides_get_category_ad_context();
+}
+
+function render_dynamic_ad( $placement_slug ) {
+	$placement_slug = sanitize_key( (string) $placement_slug );
+	if ( '' === $placement_slug ) {
+		return;
+	}
+
+	$placement_names = sassystrides_get_dynamic_ad_placement_names();
+	if ( ! isset( $placement_names[ $placement_slug ] ) ) {
+		return;
+	}
+
+	$context = sassystrides_get_dynamic_ad_context( $placement_slug );
+	if ( ! $context || empty( $context['parent_label'] ) || empty( $context['child_label'] ) ) {
+		return;
+	}
+
+	$ad_title = $context['parent_label'] . ' - ' . $context['child_label'] . ' - ' . $placement_names[ $placement_slug ];
+	$ad_id    = sassystrides_find_dynamic_ad_id( $ad_title );
+
+	if ( ! $ad_id || ! function_exists( 'the_ad' ) ) {
+		return;
+	}
+
+	the_ad( $ad_id );
+}
+
+/**
+ * Whether a top-level category slug gets the extra Advanced Ads placements.
+ * Mirrors constants/featuredPageAds.js's FEATURED_PAGE_SLUGS.
  */
 function sassystrides_is_featured_page( $slug ) {
 	return in_array( $slug, sassystrides_get_featured_category_slugs(), true );
@@ -560,31 +667,6 @@ function sassystrides_get_category_cube_ad_ids() {
 }
 
 /**
- * The 3 category sidebar ad unit IDs, in display order. Mirrors
- * CategorySidebar.jsx's SIDEBAR_AD_IDS = ['1611', '1605', '1600'].
- */
-function sassystrides_get_category_sidebar_ad_ids() {
-	return array( 1611, 1605, 1600 );
-}
-
-/**
- * Renders an Advanced Ads unit once and returns the markup as a string,
- * instead of echoing it directly. CategoryThreeCubeAds.jsx fetches each ad's
- * data once and reuses it across all 4 cube faces (front/back/left/right);
- * capturing the_ad() output here the same way avoids the_ad() being called
- * (and impressions being tracked) 4x per cube.
- */
-function sassystrides_get_ad_html( $ad_id ) {
-	if ( ! $ad_id || ! function_exists( 'the_ad' ) ) {
-		return '';
-	}
-
-	ob_start();
-	the_ad( $ad_id );
-	return trim( (string) ob_get_clean() );
-}
-
-/**
  * Article body ad injection. Ports utils/normalizeArticleHtml.js and
  * utils/adInjection.js's splitArticleParagraphs()/getArticleAdParagraphIndexes()
  * so single.php can interleave Advanced Ads at the same block positions
@@ -599,41 +681,6 @@ function sassystrides_split_list_item_content( $content ) {
 	}
 
 	if ( ! preg_match( '/^([\s\S]*?)<br\s*\/?>([\s\S]*)$/i', $trimmed, $matches ) ) {
-		return array(
-			'heading' => '',
-			'body'    => $trimmed,
-		);
-	}
-
-	$heading = trim( $matches[1] );
-	$body    = trim( $matches[2] );
-
-	if ( '' === $heading ) {
-		return array(
-			'heading' => '',
-			'body'    => $trimmed,
-		);
-	}
-
-	return array(
-		'heading' => $heading,
-		'body'    => $body,
-	);
-}
-
-function sassystrides_convert_list_heading( $list_item_html ) {
-	$sections = sassystrides_split_list_item_content( $list_item_html );
-
-	if ( null === $sections ) {
-		return '';
-	}
-
-	if ( '' === $sections['heading'] ) {
-		return '<p>' . $sections['body'] . '</p>';
-	}
-
-	$heading = '<h2 class="article-section-heading">' . $sections['heading'] . '</h2>';
-	$body    = '' !== $sections['body'] ? '<p>' . $sections['body'] . '</p>' : '';
 
 	return $heading . $body;
 }
@@ -741,41 +788,6 @@ function sassystrides_split_article_blocks( $html ) {
 	}
 
 	return $paragraphs;
-}
-
-/**
- * Advanced Ads placement IDs for in-article banners. Mirrors
- * constants/bannerPlacements.js's ARTICLE_BANNER_IDS.
- */
-function sassystrides_get_article_ad_id( $placement ) {
-	$map = array(
-		'after_fashion'          => 1550,
-		'after_featured_stories' => 1553,
-	);
-
-	return isset( $map[ $placement ] ) ? $map[ $placement ] : null;
-}
-
-/**
- * Which block index each in-article ad should render after. Mirrors
- * ArticleContentWithAds.jsx's ARTICLE_INLINE_ADS + adByParagraph logic:
- * ad 1 after block 1 once there's more than 1 block, ad 2 after block 4
- * once there are more than 4 blocks.
- *
- * @return array<int,int> Block index => Advanced Ads placement ID.
- */
-function sassystrides_get_article_ad_placements( $block_count ) {
-	$placements = array();
-
-	if ( $block_count > 1 ) {
-		$placements[1] = sassystrides_get_article_ad_id( 'after_fashion' );
-	}
-
-	if ( $block_count > 4 ) {
-		$placements[4] = sassystrides_get_article_ad_id( 'after_featured_stories' );
-	}
-
-	return $placements;
 }
 
 /**
