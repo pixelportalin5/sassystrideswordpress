@@ -190,15 +190,15 @@ $sassystrides_hero_post = ! empty( $sassystrides_filtered_posts ) ? $sassystride
 
 				<?php if ( $sassystrides_show_featured_ads ) : ?>
 					<div class="category-sidebar__ads">
-						<div class="category-sidebar__ad-slot">
-							<?php render_dynamic_ad( 'cat-sidebar-1' ); ?>
-						</div>
-						<div class="category-sidebar__ad-slot">
-							<?php render_dynamic_ad( 'cat-sidebar-2' ); ?>
-						</div>
-						<div class="category-sidebar__ad-slot">
-							<?php render_dynamic_ad( 'cat-sidebar-3' ); ?>
-						</div>
+						<?php foreach ( sassystrides_get_category_sidebar_ad_ids() as $sassystrides_sidebar_ad_id ) : ?>
+							<div class="category-sidebar__ad-slot">
+								<?php if ( function_exists( 'the_ad' ) && $sassystrides_sidebar_ad_id ) : ?>
+									<?php the_ad( $sassystrides_sidebar_ad_id ); ?>
+								<?php else : ?>
+									<!-- Advanced Ads placeholder: category sidebar ad <?php echo esc_html( $sassystrides_sidebar_ad_id ); ?> -->
+								<?php endif; ?>
+							</div>
+						<?php endforeach; ?>
 					</div>
 				<?php endif; ?>
 			</aside>
@@ -265,7 +265,14 @@ $sassystrides_hero_post = ! empty( $sassystrides_filtered_posts ) ? $sassystride
 
 						<?php if ( $sassystrides_show_featured_ads ) : ?>
 							<div class="category-page__top-banner">
-								<?php render_dynamic_ad( 'cat-in-feed-1' ); ?>
+								<?php
+								$sassystrides_billboard_ad_id = sassystrides_get_ad_id( 'category', 4 );
+								if ( function_exists( 'the_ad' ) && $sassystrides_billboard_ad_id ) {
+									the_ad( $sassystrides_billboard_ad_id );
+								} else {
+									echo '<!-- Advanced Ads placeholder: category slot 4 (billboard) -->';
+								}
+								?>
 							</div>
 						<?php endif; ?>
 
@@ -316,7 +323,14 @@ $sassystrides_hero_post = ! empty( $sassystrides_filtered_posts ) ? $sassystride
 
 							<?php if ( $sassystrides_show_featured_ads && 4 === $sassystrides_card_index ) : ?>
 								<div class="category-page__mid-ad">
-									<?php render_dynamic_ad( 'cat-in-feed-2' ); ?>
+									<?php
+									$sassystrides_mid_ad_id = sassystrides_get_ad_id( 'category', 5 );
+									if ( function_exists( 'the_ad' ) && $sassystrides_mid_ad_id ) {
+										the_ad( $sassystrides_mid_ad_id );
+									} else {
+										echo '<!-- Advanced Ads placeholder: category slot 5 (inline) -->';
+									}
+									?>
 								</div>
 							<?php endif; ?>
 
@@ -328,25 +342,28 @@ $sassystrides_hero_post = ! empty( $sassystrides_filtered_posts ) ? $sassystride
 							<!-- CategoryThreeCubeAds -->
 							<div class="category-page__cube-ads">
 								<div class="ad-cube-row">
-									<?php foreach ( array( 'cat-bottom-1', 'cat-bottom-2', 'cat-bottom-3' ) as $sassystrides_cube_placement ) : ?>
-										<div class="ad-cube-link" aria-label="<?php esc_attr_e( 'Sponsored offer', 'sassy-strides' ); ?>">
-											<div class="ad-cube-scene">
-												<div class="ad-cube">
-													<div class="ad-cube__face ad-cube__face--front">
-														<div class="ad-cube__face-html"><?php render_dynamic_ad( $sassystrides_cube_placement ); ?></div>
-													</div>
-													<div class="ad-cube__face ad-cube__face--back">
-														<div class="ad-cube__face-html"><?php render_dynamic_ad( $sassystrides_cube_placement ); ?></div>
-													</div>
-													<div class="ad-cube__face ad-cube__face--left">
-														<div class="ad-cube__face-html"><?php render_dynamic_ad( $sassystrides_cube_placement ); ?></div>
-													</div>
-													<div class="ad-cube__face ad-cube__face--right">
-														<div class="ad-cube__face-html"><?php render_dynamic_ad( $sassystrides_cube_placement ); ?></div>
+									<?php foreach ( sassystrides_get_category_cube_ad_ids() as $sassystrides_cube_ad_id ) : ?>
+										<?php $sassystrides_cube_ad_html = sassystrides_get_ad_html( $sassystrides_cube_ad_id ); ?>
+										<?php if ( '' !== $sassystrides_cube_ad_html ) : ?>
+											<div class="ad-cube-link" aria-label="<?php esc_attr_e( 'Sponsored offer', 'sassy-strides' ); ?>">
+												<div class="ad-cube-scene">
+													<div class="ad-cube">
+														<div class="ad-cube__face ad-cube__face--front">
+															<div class="ad-cube__face-html"><?php echo $sassystrides_cube_ad_html; // phpcs:ignore WordPress.Security.EscapeOutput -- trusted Advanced Ads markup. ?></div>
+														</div>
+														<div class="ad-cube__face ad-cube__face--back">
+															<div class="ad-cube__face-html"><?php echo $sassystrides_cube_ad_html; // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
+														</div>
+														<div class="ad-cube__face ad-cube__face--left">
+															<div class="ad-cube__face-html"><?php echo $sassystrides_cube_ad_html; // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
+														</div>
+														<div class="ad-cube__face ad-cube__face--right">
+															<div class="ad-cube__face-html"><?php echo $sassystrides_cube_ad_html; // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
+														</div>
 													</div>
 												</div>
 											</div>
-										</div>
+										<?php endif; ?>
 									<?php endforeach; ?>
 								</div>
 							</div>
